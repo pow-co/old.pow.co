@@ -6,6 +6,24 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 
 import useAPI from '../../@core/hooks/useAPI'
+import { OnChainImage } from 'src/components/bfiles/Image'
+
+import Image from 'next/image'
+
+import Link from 'next/link'
+
+import styled from 'styled-components'
+
+interface Ranking {
+  content_txid: string;
+  content_type: string;
+  count: number;
+  difficulty: number;
+}
+
+const WhiteLink = styled.a`
+  color: white;
+`
 
 const Top = () => {
 
@@ -28,22 +46,28 @@ const Top = () => {
 
   return (
     <Grid container spacing={6}>
-      {rankings.map((job) => {
+      {rankings.map((job: Ranking) => {
           return (
             <Grid item xs={12}>
             <Card>
-              <CardHeader title={`${job.rank}) ${job.content_type}`}></CardHeader>
+              <CardHeader title={`${job.difficulty} ${job.content_type || ''}`}></CardHeader>
               <CardContent>
-                <Typography sx={{ mb: 2 }}>
-                  content: {job.content}
-                </Typography>
-                <Typography sx={{ mb: 2 }}>
-                  difficulty: {job.difficulty}
-                </Typography>
-                <Typography sx={{ mb: 2 }}>
-                  value: {job.value}
-                </Typography>
+              <small sx={{color: 'white'}}><Link sx={{color: 'white'}} target="_blank" href={`https://whatsonchain.com/${job.content_txid}`}>
+                <WhiteLink>{job.content_txid}</WhiteLink>
+                </Link></small>
 
+              {job.content_type?.match('image') && (
+                
+                <Image src={`https://bitcoinfileserver.com/${job.content_txid}`} width={'100%'} height={'100%'} layout={'responsive'}/>
+              )}
+
+              
+              {job.content_type?.match('text/plain') && (
+                
+                <p>{job.content}</p>
+              )}
+
+  
               </CardContent>
             </Card>
           </Grid>

@@ -27,6 +27,6 @@ module.exports = withTM({
     return config
   },
   images: {
-    domains: ['doge.bitcoinfiles.org']
+    domains: ['doge.bitcoinfiles.org', 'bitcoinfileserver.com']
   }
 })
