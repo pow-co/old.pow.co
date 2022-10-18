@@ -112,6 +112,7 @@ const HorizontalLayout = (props: LayoutProps) => {
               minHeight: theme => `${(theme.mixins.toolbar.minHeight as number) - 1}px !important`
             }}
           >
+            
             <AppBarContent {...props} hidden={hidden} settings={settings} saveSettings={saveSettings} />
           </Toolbar>
         </Box>
@@ -141,7 +142,8 @@ const HorizontalLayout = (props: LayoutProps) => {
           ...(contentWidth === 'boxed' && {
             mx: 'auto',
             '@media (min-width:1440px)': { maxWidth: 1440 },
-            '@media (min-width:1200px)': { maxWidth: '100%' }
+            '@media (min-width:1200px)': { maxWidth: '100%' },
+            margin: '0 auto'
           })
         }}
       >

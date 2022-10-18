@@ -24,6 +24,9 @@ const GlobalStyles = (theme: Theme, settings: Settings) => {
   }
 
   return {
+    '.layout-page-content': {
+      margin: '0 auto'
+    },
     'body[style^="padding-right"] .layout-navbar-and-nav-container::after': {
       content: '""',
       position: 'absolute' as const,

@@ -14,9 +14,17 @@ import Link from 'next/link'
 
 import styled from 'styled-components'
 
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
+import { useState } from 'react'
+import { TextField } from '@mui/material'
+
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
 interface Ranking {
   content_txid: string;
-  content_type: string;
+  content_type?: string;
+  content_text?: string;
   count: number;
   difficulty: number;
 }
@@ -26,6 +34,8 @@ const WhiteLink = styled.a`
 `
 
 const Top = () => {
+
+  const [date, setDate] = useState<Date>()
 
   let { data, error, loading } = useAPI('/api/v1/boost/rankings')
 
@@ -44,15 +54,21 @@ const Top = () => {
 
   const { rankings } = data
 
+
+  function handleChange(value: Date) {
+    setDate(value)
+  }
+
   return (
     <Grid container spacing={6}>
+
       {rankings.map((job: Ranking) => {
           return (
             <Grid item xs={12}>
             <Card>
               <CardHeader title={`${job.difficulty} ${job.content_type || ''}`}></CardHeader>
               <CardContent>
-              <small sx={{color: 'white'}}><Link sx={{color: 'white'}} target="_blank" href={`https://whatsonchain.com/${job.content_txid}`}>
+              <small ><Link target="_blank" href={`https://whatsonchain.com/${job.content_txid}`}>
                 <WhiteLink>{job.content_txid}</WhiteLink>
                 </Link></small>
 
@@ -64,7 +80,7 @@ const Top = () => {
               
               {job.content_type?.match('text/plain') && (
                 
-                <p>{job.content}</p>
+                <p>{job.content_text}</p>
               )}
 
   
