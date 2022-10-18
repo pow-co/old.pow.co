@@ -14,12 +14,18 @@ import Link from 'next/link'
 
 import styled from 'styled-components'
 
+import moment from 'moment'
+
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { TextField } from '@mui/material'
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import useDateRange from 'src/hooks/useDateRange'
+import { DateSpan, Dates } from '../_app'
+
+import useBus from 'use-bus'
 
 interface Ranking {
   content_txid: string;
@@ -33,13 +39,40 @@ const WhiteLink = styled.a`
   color: white;
 `
 
-const Top = () => {
+function Rankings({startDate, endDate}: Dates) {
 
-  const [date, setDate] = useState<Date>()
+  const [start, setStartDate] = useState(startDate)
+  const [end, setEndDate] = useState(endDate)
 
-  let { data, error, loading } = useAPI('/api/v1/boost/rankings')
+  let { data, error, loading, refresh } = useAPI(`/api/v1/boost/rankings?start_date=${moment(start).unix()}`)
 
   console.log('result', { data, error, loading })
+
+  useBus(
+    'date_range_from_updated',
+    ({value}) => {
+      console.log('DATE RANGE FROM UPDATED VIA BUS!', value)
+
+      console.log('moment', moment(value).toDate())
+      console.log('unix', moment(value).unix())
+
+      setStartDate(value)
+
+      refresh()
+    },
+    [startDate],
+  )
+
+  useBus(
+    'date_range_to_updated',
+    ({value}) => {
+      console.log('DATE RANGE TO UPDATED VIA BUS!', value)
+
+      setEndDate(value)
+      refresh()
+    },
+    [endDate],
+  )
 
   if (!data && !error) {
     return <>Loading</>
@@ -53,12 +86,6 @@ const Top = () => {
   }
 
   const { rankings } = data
-
-
-  function handleChange(value: Date) {
-    setDate(value)
-  }
-
   return (
     <Grid container spacing={6}>
 
@@ -92,6 +119,18 @@ const Top = () => {
 
     </Grid>
   )
+}
+
+const Top = () => {
+
+  return <>
+    <DateSpan.Consumer>
+      {({ startDate, endDate }) => (
+        <Rankings startDate={startDate} endDate={endDate} />
+      )}
+    </DateSpan.Consumer>
+  </>
+
 }
 
 export default Top

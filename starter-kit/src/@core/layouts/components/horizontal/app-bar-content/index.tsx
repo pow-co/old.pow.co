@@ -42,6 +42,12 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+
+import useDateRange from 'src/hooks/useDateRange'
+
+import { dispatch } from 'use-bus'
+
 const AppBarContent = (props: Props) => {
   // ** Props
   const {
@@ -52,18 +58,21 @@ const AppBarContent = (props: Props) => {
   // ** Hooks
   const theme = useTheme()
 
-  const [startDate, setStartDate] = useState<Date>(moment().subtract(1, 'month').toDate())
+  const { startDate, setStartDate, endDate, setEndDate } = useDateRange()
 
-  const [endDate, setEndDate] = useState<Date>(moment().toDate())
-
+  
   function handleChangeFrom(value: Date) {
     console.log('handle change from', value)
     setStartDate(value)
+
+    dispatch({ type: 'date_range_from_updated', value })
   }
 
   function handleChangeTo(value: Date) {
     console.log('handle change to', value)
     setEndDate(value)
+
+    dispatch({ type: 'date_range_to_updated', value })
   }
 
   return (
@@ -89,7 +98,7 @@ const AppBarContent = (props: Props) => {
           </StyledLink>
 
         </Link>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterMoment}>
           from
           <MobileDatePicker
             inputFormat="MM/DD/YYYY"

@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { createContext, ReactNode } from 'react'
 
 // ** Next Imports
 import Head from 'next/head'
@@ -61,6 +61,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 
 // ** Global css styles
 import '../../styles/globals.css'
+import useDateRange from 'src/hooks/useDateRange'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -99,6 +100,18 @@ const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
   }
 }
 
+export interface Dates {
+  startDate: Date;
+  endDate: Date;
+}
+
+
+export const DateSpan = createContext({
+  startDate: new Date(),
+  endDate: new Date()
+})
+
+
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
@@ -113,6 +126,8 @@ const App = (props: ExtendedAppProps) => {
   const guestGuard = Component.guestGuard ?? false
 
   const aclAbilities = Component.acl ?? defaultACLObj
+
+  const dateSpan = useDateRange()
 
   return (
     
@@ -136,7 +151,9 @@ const App = (props: ExtendedAppProps) => {
                     <WindowWrapper>
                       <Guard authGuard={authGuard} guestGuard={guestGuard}>
                         <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>
-                          {getLayout(<Component {...pageProps} />)}
+                          <DateSpan.Provider value={dateSpan}>
+                            {getLayout(<Component {...pageProps} />)}
+                          </DateSpan.Provider>
                         </AclGuard>
                       </Guard>
                     </WindowWrapper>
