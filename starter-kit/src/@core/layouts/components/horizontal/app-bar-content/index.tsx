@@ -61,14 +61,14 @@ const AppBarContent = (props: Props) => {
   const { startDate, setStartDate, endDate, setEndDate } = useDateRange()
 
   
-  function handleChangeFrom(value: Date) {
+  function handleChangeFrom(value: any) {
     console.log('handle change from', value)
     setStartDate(value)
 
     dispatch({ type: 'date_range_from_updated', value })
   }
 
-  function handleChangeTo(value: Date) {
+  function handleChangeTo(value: any) {
     console.log('handle change to', value)
     setEndDate(value)
 
@@ -99,20 +99,14 @@ const AppBarContent = (props: Props) => {
 
         </Link>
         <LocalizationProvider dateAdapter={AdapterMoment}>
-          from
+          Top Boosted Since
           <MobileDatePicker
             inputFormat="MM/DD/YYYY"
             value={startDate}
             onChange={handleChangeFrom}
             renderInput={(params) => <TextField {...params} />}
           />
-          to
-                    <MobileDatePicker
-            inputFormat="MM/DD/YYYY"
-            value={endDate}
-            onChange={handleChangeTo}
-            renderInput={(params) => <TextField {...params} />}
-          />
+
         </LocalizationProvider>
         </>
       )}

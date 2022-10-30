@@ -22,13 +22,21 @@ const GuestGuard = (props: GuestGuardProps) => {
       return
     }
 
-    if (window.localStorage.getItem('userData')) {
+    const userData = window.localStorage.getItem('userData')
+
+    if (userData) {
+
+      console.log('GUEST GUARD USER DATA FOUND 2', userData)
       router.replace('/')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.route])
 
+  console.log("IN GUEST GUARD", auth)
+
   if (auth.loading || (!auth.loading && auth.user !== null)) {
+
+    console.log('auth.loading || (!auth.loading && auth.user !== null)')
     return fallback
   }
 

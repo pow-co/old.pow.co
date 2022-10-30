@@ -1,12 +1,11 @@
 // ** MUI Imports
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 
 import useAPI from '../../@core/hooks/useAPI'
-import { OnChainImage } from 'src/components/bfiles/Image'
+import {  } from 'src/components/bfiles/Image'
 
 import Image from 'next/image'
 
@@ -16,13 +15,8 @@ import styled from 'styled-components'
 
 import moment from 'moment'
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
-import { useEffect, useState } from 'react'
-import { TextField } from '@mui/material'
+import { useState } from 'react'
 
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import useDateRange from 'src/hooks/useDateRange'
 import { DateSpan, Dates } from '../_app'
 
 import useBus from 'use-bus'
@@ -42,9 +36,8 @@ const WhiteLink = styled.a`
 function Rankings({startDate, endDate}: Dates) {
 
   const [start, setStartDate] = useState(startDate)
-  const [end, setEndDate] = useState(endDate)
 
-  let { data, error, loading, refresh } = useAPI(`/api/v1/boost/rankings?start_date=${moment(start).unix()}`)
+  const { data, error, loading, refresh } = useAPI(`/api/v1/boost/rankings?start_date=${moment(start).unix()}`)
 
   console.log('result', { data, error, loading })
 
@@ -68,7 +61,6 @@ function Rankings({startDate, endDate}: Dates) {
     ({value}) => {
       console.log('DATE RANGE TO UPDATED VIA BUS!', value)
 
-      setEndDate(value)
       refresh()
     },
     [endDate],
@@ -85,13 +77,14 @@ function Rankings({startDate, endDate}: Dates) {
     </div>
   }
 
-  const { rankings } = data
+  const { rankings } = data;
+
   return (
     <Grid container spacing={6}>
 
       {rankings.map((job: Ranking) => {
           return (
-            <Grid item xs={12}>
+            <Grid key={job.content_txid} item xs={12}>
             <Card>
               <CardHeader title={`${job.difficulty} ${job.content_type || ''}`}></CardHeader>
               <CardContent>
@@ -122,6 +115,8 @@ function Rankings({startDate, endDate}: Dates) {
 }
 
 const Top = () => {
+
+  console.log("TOP INDEX PAGE")
 
   return <>
     <DateSpan.Consumer>

@@ -25,20 +25,6 @@ const navigation = (): HorizontalNavItemsType => [
     path: '/work',
     action: 'read',
     subject: 'acl-page'
-  },
-  {
-    title: 'Boost',
-    icon: PlusOutline,
-    path: '/boost',
-    action: 'read',
-    subject: 'acl-page'
-  },
-  {
-    title: 'Post',
-    icon: CloudUploadOutline,
-    path: '/boost',
-    action: 'read',
-    subject: 'acl-page'
   }
 ]
 

@@ -13,6 +13,9 @@ import Layout from 'src/@core/layouts/Layout'
 import VerticalNavItems from 'src/navigation/vertical'
 import HorizontalNavItems from 'src/navigation/horizontal'
 
+import Script from 'next/script';
+
+
 // ** Component Import
 // Uncomment the below line (according to the layout type) when using server-side menu
 // import ServerSideVerticalNavItems from './components/vertical/ServerSideNavItems'
@@ -78,6 +81,8 @@ const UserLayout = ({ children }: Props) => {
             )
           })}
     >
+      <Script src="https://one.relayx.io/relayone.js" />
+
       {children}
     </Layout>
   )

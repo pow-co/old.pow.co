@@ -13,7 +13,7 @@ axiosInstance.interceptors.response.use(
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 
-export function fetcher(params) {
+export function fetcher(params: any) {
     console.log('axios.get', params)
   return axiosInstance(params).then(({ data }) => {
 
@@ -22,7 +22,7 @@ export function fetcher(params) {
   });
 }
 
-export default function useAPI(path) {
+export default function useAPI(path: string) {
 
   console.log('USE API')
 

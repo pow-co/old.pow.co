@@ -19,7 +19,7 @@ export function OnChainImage({ txid }: { txid: string }) {
 
     console.log('useSWR', url)
 
-    const { data, error } = useSWR(url, fetcher)
+    const { data } = useSWR(url, fetcher)
 
     console.log('useSWR.result', { url, data })
 
@@ -32,5 +32,5 @@ export function Image({ data, contentType, encoding }: ImageParams) {
 
     encoding = encoding || 'base64'
 
-    return <img src={`data:${contentType};${encoding},${data}`}/>
+    return <img alt={''} src={`data:${contentType};${encoding},${data}`}/>
 }

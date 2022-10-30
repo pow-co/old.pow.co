@@ -71,33 +71,43 @@ const AuthProvider = ({ children }: Props) => {
     initAuth()
   }, [])
 
-  const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
-    axios
-      .post(authConfig.loginEndpoint, params)
-      .then(async res => {
-        window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.accessToken)
-      })
-      .then(() => {
-        axios
-          .get(authConfig.meEndpoint, {
-            headers: {
-              Authorization: window.localStorage.getItem(authConfig.storageTokenKeyName)!
-            }
-          })
-          .then(async response => {
-            const returnUrl = router.query.returnUrl
+  const handleLogin = async (errorCallback?: ErrCallbackType) => {
 
-            setUser({ ...response.data.userData })
-            await window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
+    console.log('HANDLE LOGIN')
 
-            const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
+    try {
+                  // @ts-ignore
+            const token = await relayone.authBeta();
 
-            router.replace(redirectURL as string)
-          })
-      })
-      .catch(err => {
-        if (errorCallback) errorCallback(err)
-      })
+            console.log({token})
+
+            const json = JSON.parse(atob(token.split('.')[0]));
+            console.log({json})
+            localStorage.setItem('powco.auth.type', 'relayx');
+            localStorage.setItem('powco.auth.relayx.token', token);
+            localStorage.setItem('powco.auth.relayx.auth', JSON.stringify(json));
+            localStorage.setItem('powco.auth.relayx.paymail', json.paymail);
+            localStorage.setItem('powco.auth.relayx.pubkey', json.pubkey);
+            localStorage.setItem('powco.auth.relayx.origin', json.origin);
+            localStorage.setItem('powco.auth.relayx.issued_at', json.issued_at);
+
+            localStorage.setItem('userData', Object.assign(json, {
+              email: json.paymail,
+              role: 'relayx'
+            }))
+            localStorage.setItem('refreshToken', token)
+            localStorage.setItem('accessToken', token)
+      
+            setUser(json)
+            
+            router.replace('/top')
+
+    } catch(error) {
+
+      console.error('powco.auth.relayx.error', error)
+    
+    }
+
   }
 
   const handleLogout = () => {
@@ -115,7 +125,7 @@ const AuthProvider = ({ children }: Props) => {
         if (res.data.error) {
           if (errorCallback) errorCallback(res.data.error)
         } else {
-          handleLogin({ email: params.email, password: params.password })
+          handleLogin()
         }
       })
       .catch((err: { [key: string]: string }) => (errorCallback ? errorCallback(err) : null))

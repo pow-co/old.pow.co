@@ -51,7 +51,7 @@ const UserDropdown = (props: Props) => {
 
   // ** Hooks
   const router = useRouter()
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
 
   // ** Vars
   const { direction } = settings
@@ -81,10 +81,14 @@ const UserDropdown = (props: Props) => {
     }
   }
 
+  console.log('___USER___', user)
+
   const handleLogout = () => {
     logout()
     handleDropdownClose()
   }
+
+  const paymail = user?.paymail
 
   return (
     <Fragment>
@@ -98,12 +102,22 @@ const UserDropdown = (props: Props) => {
           horizontal: 'right'
         }}
       >
-        <Avatar
-          alt='Anonymous User'
-          onClick={handleDropdownOpen}
-          sx={{ width: 40, height: 40 }}
-          src='https://bitpic.network/u/anonymous'
-        />
+        {user?.paymail ? (
+          <Avatar
+            alt={user.paymail}
+            onClick={handleDropdownOpen}
+            sx={{ width: 40, height: 40 }}
+            src={`https://bitpic.network/u/${user.paymail}`}
+          />
+        ) : (
+          <Avatar
+            alt={paymail}
+            onClick={handleDropdownOpen}
+            sx={{ width: 40, height: 40 }}
+            src={`https://bitpic.network/u/${paymail}`}
+          />
+        )}
+
       </Badge>
       <Menu
         anchorEl={anchorEl}
@@ -129,11 +143,13 @@ const UserDropdown = (props: Props) => {
                 horizontal: 'right'
               }}
             >
-              <Avatar
-                alt='Anonymous User'
-                src='https://bitpic.network/u/invalid'
-                sx={{ width: '2.5rem', height: '2.5rem' }}
+                <Avatar
+                alt={user.paymail}
+                onClick={handleDropdownOpen}
+                sx={{ width: 40, height: 40 }}
+                src={`https://bitpic.network/u/${user?.paymail}`}
               />
+
             </Badge>
             <Box
               sx={{
@@ -143,7 +159,7 @@ const UserDropdown = (props: Props) => {
                 flexDirection: 'column'
               }}
             >
-              <Typography sx={{ fontWeight: 600 }}>Anonymous User</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user?.paymail}</Typography>
               <Typography
                 variant='body2'
                 sx={{ fontSize: '0.8rem', color: 'text.disabled' }}
@@ -153,7 +169,6 @@ const UserDropdown = (props: Props) => {
             </Box>
           </Box>
         </Box>
-        {/*}
         <Divider sx={{ mt: 0, mb: 1 }} />
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
@@ -203,7 +218,6 @@ const UserDropdown = (props: Props) => {
           />
           Logout
         </MenuItem>
-          */}
       </Menu>
     </Fragment>
   )

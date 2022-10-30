@@ -62,6 +62,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 import useDateRange from 'src/hooks/useDateRange'
+import Script from 'next/script'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -91,11 +92,15 @@ if (themeConfig.routingLoader) {
 }
 
 const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
+  console.log('GUARD')
   if (guestGuard) {
+    console.log('GUEST GUARD')
     return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
   } else if (!guestGuard && !authGuard) {
+    console.log('NO GUARD')
     return <>{children}</>
   } else {
+    console.log('AUTH GUARD')
     return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
   }
 }
@@ -142,6 +147,8 @@ const App = (props: ExtendedAppProps) => {
           <meta name='viewport' content='initial-scale=1, width=device-width' />
         </Head>
 
+        <Script src="https://one.relayx.io/relayone.js" />
+
         <AuthProvider>
           <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
             <SettingsConsumer>
@@ -150,11 +157,11 @@ const App = (props: ExtendedAppProps) => {
                   <ThemeComponent settings={settings}>
                     <WindowWrapper>
                       <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                        <AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>
+                        {/*<AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>*/}
                           <DateSpan.Provider value={dateSpan}>
                             {getLayout(<Component {...pageProps} />)}
                           </DateSpan.Provider>
-                        </AclGuard>
+                        {/*</AclGuard>*/}
                       </Guard>
                     </WindowWrapper>
                     <ReactHotToast>

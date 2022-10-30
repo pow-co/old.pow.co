@@ -9,7 +9,7 @@ import useAPI from '../../@core/hooks/useAPI'
 
 const Top = () => {
 
-  let { data, error, loading } = useAPI('/api/v1/boost/work')
+  const { data, error, loading } = useAPI('/api/v1/boost/work')
 
   console.log('result', { data, error, loading })
 
@@ -28,9 +28,9 @@ const Top = () => {
 
   return (
     <Grid container spacing={6}>
-      {work.map((job) => {
+      {work.map((job: any) => {
           return (
-            <Grid item xs={12}>
+            <Grid item xs={12} key={job.txid}>
             <Card>
               <CardHeader title={`${job.timestamp}`}></CardHeader>
               <CardContent>
