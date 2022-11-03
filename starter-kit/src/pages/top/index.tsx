@@ -23,6 +23,8 @@ import useBus from 'use-bus'
 
 import { fetcher } from '../../@core/hooks/useAPI'
 
+import YouTube from 'react-youtube';
+
 import useSWR from 'swr'
 
 interface Ranking {
@@ -106,13 +108,21 @@ function OnchainEvent({ txid }: {txid: string}) {
 
 function YoutubeMetadataOnchain({txid, event}: {txid: string, event: any}) {
 
-  console.log('YOuTUBE', event)
+  console.log('youtube', {txid, event})
+
+  const opts = {
+    //height: '390',
+    width: '100%',
+    playerVars: {
+      // https://developers.google.com/youtube/player_parameters
+      autoplay: 0,
+    },
+  };
 
   return (
     <>
-      <h2 data-txid={txid}><a href={event.content.video_url} target="_blank" rel="noreferrer" >{event.content.title}</a></h2>
-      <h4>by <a href={event.content.author_url} target="_blank" rel="noreferrer" >{event.content.author_name}</a> on Youtube</h4>
-      <img alt='youtube image thumbnail' src={event.content.thumbnail_url} />
+
+      <YouTube videoId={event.content.video_id} opts={opts}/>
     </>
   )
 
