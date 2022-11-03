@@ -5,7 +5,7 @@ import moment from 'moment'
 
 export default function useDateRange() {
     
-  const [startDate, setStartDate] = useState<Date>(moment().subtract(1, 'month').toDate())
+  const [startDate, setStartDate] = useState<Date>(moment().subtract(1, 'days').toDate())
 
   const [endDate, setEndDate] = useState<Date>(moment().toDate())
 

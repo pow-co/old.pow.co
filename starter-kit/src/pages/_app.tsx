@@ -7,10 +7,6 @@ import { Router } from 'next/router'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
-
-
-
-
 // ** Loader Import
 import NProgress from 'nprogress'
 
@@ -20,7 +16,7 @@ import type { EmotionCache } from '@emotion/cache'
 
 // ** Config Imports
 
-import { defaultACLObj } from 'src/configs/acl'
+//import { defaultACLObj } from 'src/configs/acl'
 import themeConfig from 'src/configs/themeConfig'
 
 // ** Fake-DB Import
@@ -31,7 +27,6 @@ import { Toaster } from 'react-hot-toast'
 
 // ** Component Imports
 import UserLayout from 'src/layouts/UserLayout'
-import AclGuard from 'src/@core/components/auth/AclGuard'
 import ThemeComponent from 'src/@core/theme/ThemeComponent'
 import AuthGuard from 'src/@core/components/auth/AuthGuard'
 import GuestGuard from 'src/@core/components/auth/GuestGuard'
@@ -92,15 +87,11 @@ if (themeConfig.routingLoader) {
 }
 
 const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
-  console.log('GUARD')
   if (guestGuard) {
-    console.log('GUEST GUARD')
     return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
   } else if (!guestGuard && !authGuard) {
-    console.log('NO GUARD')
     return <>{children}</>
   } else {
-    console.log('AUTH GUARD')
     return <AuthGuard fallback={<Spinner />}>{children}</AuthGuard>
   }
 }
@@ -130,7 +121,7 @@ const App = (props: ExtendedAppProps) => {
 
   const guestGuard = Component.guestGuard ?? false
 
-  const aclAbilities = Component.acl ?? defaultACLObj
+  //const aclAbilities = Component.acl ?? defaultACLObj
 
   const dateSpan = useDateRange()
 

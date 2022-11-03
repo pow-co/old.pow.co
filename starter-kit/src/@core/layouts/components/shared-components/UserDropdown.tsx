@@ -152,25 +152,7 @@ const UserDropdown = (props: Props) => {
             Chat
           </Box>
         </MenuItem>
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/account-settings')}>
-          <Box sx={styles}>
-            <CogOutline sx={{ mr: 2 }} />
-            Settings
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/pricing')}>
-          <Box sx={styles}>
-            <CurrencyUsd sx={{ mr: 2 }} />
-            Pricing
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/faq')}>
-          <Box sx={styles}>
-            <HelpCircleOutline sx={{ mr: 2 }} />
-            FAQ
-          </Box>
-        </MenuItem>
+
         <Divider />
         <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
           <LogoutVariant sx={{ mr: 2, fontSize: '1.375rem', color: 'text.secondary' }} />

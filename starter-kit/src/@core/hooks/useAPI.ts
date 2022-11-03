@@ -14,10 +14,8 @@ axiosInstance.interceptors.response.use(
 );
 
 export function fetcher(params: any) {
-    console.log('axios.get', params)
   return axiosInstance(params).then(({ data }) => {
 
-    console.log('axios data', data)
     return data;
   });
 }

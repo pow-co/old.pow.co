@@ -7,13 +7,14 @@ interface ImageParams {
     data: string;
     contentType?: string;
     encoding?: string;
+    alt?: string;
 }
 
 const bitcoinfilesProvider = 'https://bitcoinfilesystem.com'
 
 const fetcher = (url: string): Promise<any> => axios.get(url).then(res => res.data)
 
-export function OnChainImage({ txid }: { txid: string }) {
+export function OnChainImage({ txid, alt }: { txid: string, alt?: string }) {
 
     const url = `${bitcoinfilesProvider}/${txid}`
 
@@ -23,14 +24,14 @@ export function OnChainImage({ txid }: { txid: string }) {
 
     console.log('useSWR.result', { url, data })
 
-    return <Image data={data} />
+    return <Image alt={alt} data={data} />
 }
 
-export function Image({ data, contentType, encoding }: ImageParams) {
+export function Image({ data, contentType, encoding, alt }: ImageParams) {
 
     contentType = contentType || 'image/jpeg'
 
     encoding = encoding || 'base64'
 
-    return <img alt={''} src={`data:${contentType};${encoding},${data}`}/>
+    return <img alt={alt} src={`data:${contentType};${encoding},${data}`}/>
 }

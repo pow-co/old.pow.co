@@ -21,6 +21,10 @@ import { DateSpan, Dates } from '../_app'
 
 import useBus from 'use-bus'
 
+import { fetcher } from '../../@core/hooks/useAPI'
+
+import useSWR from 'swr'
+
 interface Ranking {
   content_txid: string;
   content_type?: string;
@@ -32,6 +36,87 @@ interface Ranking {
 const WhiteLink = styled.a`
   color: white;
 `
+
+function OnchainEvent({ txid }: {txid: string}) {
+
+  // @ts-ignore
+  const { data } = useSWR(`https://onchain.sv/api/v1/events/${txid}`, fetcher)
+
+  if (!data || data.events.length === 0) {
+    return <></>
+  }
+
+  const [event] = data.events
+
+  console.log('EVENT', event)
+
+  if (event.app === 'powstream.com') {
+
+    if (event.type === 'youtube_video_metadata' && event.author === '1D1hSyDc7UF4KbGFTSSXLirCBepjcN19GN') {
+
+      return <YoutubeMetadataOnchain txid={txid} event={event}/>
+
+    }
+  }
+
+  if (event.app === '1HWaEAD5TXC2fWHDiua9Vue3Mf8V1ZmakN') { // askbitcoin.ai
+
+    if (event.type === 'question') {
+
+      console.log('askbitcoin.ai.question', event)
+      
+      return <>
+        <h3><a className="askbitcoinLink" href={`https://askbitcoin.ai/questions/${event.txid}`}>AskBitcoin.AI Question:</a></h3>
+
+        <h3>Question: {event.content.content}</h3>
+      </>
+    }
+
+    if (event.type === 'answer') {
+
+      console.log('askbitcoin.ai.answer', event)
+
+      return <>
+        <h3><a className="askbitcoinLink" href={`https://askbitcoin.ai/answers/${event.txid}`}>AskBitcoin.AI Answer:</a></h3>
+        <h4>{event. content.content}</h4>
+      </>
+    }
+
+  }
+
+  if (event.app === 'boostpatriots.win' && event.author === "18h6yhKBBqXQge6XRauMTeEaQ9HF4jR1qV") {
+
+    console.log('BOOST PATRIOTS', event)
+
+    return <>
+      <h3><a rel="noreferrer"  href={`https://boostpatriots.win${event.content.href}`}>BoostPatriots.Win</a></h3>
+      <h4>{event.content.title}</h4>
+    </>
+  }
+
+  return (
+    <>
+      <h1>{data.events[0].content.title}</h1>
+      <h4>by {data.events[0].content.author_name}</h4>
+      <p>txid: {txid}</p>    
+    </>
+  )
+
+}
+
+function YoutubeMetadataOnchain({txid, event}: {txid: string, event: any}) {
+
+  console.log('YOuTUBE', event)
+
+  return (
+    <>
+      <h2 data-txid={txid}><a href={event.content.video_url} target="_blank" rel="noreferrer" >{event.content.title}</a></h2>
+      <h4>by <a href={event.content.author_url} target="_blank" rel="noreferrer" >{event.content.author_name}</a> on Youtube</h4>
+      <img alt='youtube image thumbnail' src={event.content.thumbnail_url} />
+    </>
+  )
+
+}
 
 function Rankings({startDate, endDate}: Dates) {
 
@@ -58,9 +143,7 @@ function Rankings({startDate, endDate}: Dates) {
 
   useBus(
     'date_range_to_updated',
-    ({value}) => {
-      console.log('DATE RANGE TO UPDATED VIA BUS!', value)
-
+    () => {
       refresh()
     },
     [endDate],
@@ -83,26 +166,28 @@ function Rankings({startDate, endDate}: Dates) {
     <Grid container spacing={6}>
 
       {rankings.map((job: Ranking) => {
+        
           return (
             <Grid key={job.content_txid} item xs={12}>
             <Card>
               <CardHeader title={`${job.difficulty} ${job.content_type || ''}`}></CardHeader>
               <CardContent>
-              <small ><Link target="_blank" href={`https://whatsonchain.com/${job.content_txid}`}>
-                <WhiteLink>{job.content_txid}</WhiteLink>
-                </Link></small>
+                <small ><Link target="_blank" rel="noreferrer"  href={`https://whatsonchain.com/${job.content_txid}`}>
+                  <WhiteLink>{job.content_txid}</WhiteLink>
+                  </Link></small>
 
-              {job.content_type?.match('image') && (
+                {job.content_type?.match('image') && (
+                  
+                  <Image alt='bitcoin file server image' src={`https://bitcoinfileserver.com/${job.content_txid}`} width={'100%'} height={'100%'} layout={'responsive'}/>
+                )}
+
                 
-                <Image src={`https://bitcoinfileserver.com/${job.content_txid}`} width={'100%'} height={'100%'} layout={'responsive'}/>
-              )}
+                {job.content_type?.match('text/plain') && (
+                  
+                  <p>{job.content_text}</p>
+                )}
 
-              
-              {job.content_type?.match('text/plain') && (
-                
-                <p>{job.content_text}</p>
-              )}
-
+                <OnchainEvent txid={job.content_txid}/>
   
               </CardContent>
             </Card>

@@ -24,6 +24,9 @@ const GlobalStyles = (theme: Theme, settings: Settings) => {
   }
 
   return {
+    'a': {
+      textDecoration: 'none'
+    },
     '.layout-page-content': {
       margin: '0 auto'
     },

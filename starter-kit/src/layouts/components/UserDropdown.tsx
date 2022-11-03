@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, SyntheticEvent, Fragment } from 'react'
+import { useState, SyntheticEvent, Fragment, useEffect } from 'react'
 
 // ** Next Import
 import { useRouter } from 'next/router'
@@ -42,9 +42,13 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
   boxShadow: `0 0 0 2px ${theme.palette.background.paper}`
 }))
 
+const axios = require('axios')
+
 const UserDropdown = (props: Props) => {
   // ** Props
   const { settings } = props
+
+  const [powcoBalance, setPowcoBalance] = useState(0)
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
@@ -67,6 +71,25 @@ const UserDropdown = (props: Props) => {
     setAnchorEl(null)
   }
 
+  useEffect(function() {
+
+    (async () => {
+
+      const { data } = await axios.get('https://staging-backend.relayx.com/api/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
+
+      console.log('RELAYX OWNERS', data)
+
+      const [owner] = data.data.owners.filter((owner: any) => {
+        return owner.paymail === user?.paymail
+      })
+  
+      setPowcoBalance(owner?.amount)
+
+    })();
+
+
+  }, [])
+
   const styles = {
     py: 2,
     px: 4,
@@ -80,8 +103,6 @@ const UserDropdown = (props: Props) => {
       color: 'text.secondary'
     }
   }
-
-  console.log('___USER___', user)
 
   const handleLogout = () => {
     logout()
@@ -144,7 +165,7 @@ const UserDropdown = (props: Props) => {
               }}
             >
                 <Avatar
-                alt={user.paymail}
+                alt={user?.paymail}
                 onClick={handleDropdownOpen}
                 sx={{ width: 40, height: 40 }}
                 src={`https://bitpic.network/u/${user?.paymail}`}
@@ -173,9 +194,10 @@ const UserDropdown = (props: Props) => {
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <AccountOutline sx={{ mr: 2 }} />
-            Profile
+            {powcoBalance} POWCO
           </Box>
         </MenuItem>
+        {/*
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <EmailOutline sx={{ mr: 2 }} />
@@ -188,26 +210,8 @@ const UserDropdown = (props: Props) => {
             Chat
           </Box>
         </MenuItem>
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CogOutline sx={{ mr: 2 }} />
-            Settings
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <CurrencyUsd sx={{ mr: 2 }} />
-            Pricing
-          </Box>
-        </MenuItem>
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-          <Box sx={styles}>
-            <HelpCircleOutline sx={{ mr: 2 }} />
-            FAQ
-          </Box>
-        </MenuItem>
-        <Divider />
+        <Divider />*/}
+
         <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
           <LogoutVariant
             sx={{

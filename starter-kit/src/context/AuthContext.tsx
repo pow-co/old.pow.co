@@ -71,7 +71,7 @@ const AuthProvider = ({ children }: Props) => {
     initAuth()
   }, [])
 
-  const handleLogin = async (errorCallback?: ErrCallbackType) => {
+  const handleLogin = async () => {
 
     console.log('HANDLE LOGIN')
 
