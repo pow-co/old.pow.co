@@ -32,4 +32,5 @@ export type AuthValuesType = {
   setIsInitialized: (value: boolean) => void
   login: () => void
   register: (params: RegisterParams, errorCallback?: ErrCallbackType) => void
+  powcoBalance: number
 }

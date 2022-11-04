@@ -23,7 +23,8 @@ const defaultProvider: AuthValuesType = {
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   setIsInitialized: () => Boolean,
-  register: () => Promise.resolve()
+  register: () => Promise.resolve(),
+  powcoBalance: 0
 }
 
 const AuthContext = createContext(defaultProvider)
@@ -37,6 +38,7 @@ const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserDataType | null>(defaultProvider.user)
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading)
   const [isInitialized, setIsInitialized] = useState<boolean>(defaultProvider.isInitialized)
+  const [powcoBalance, setPowcoBalance] = useState(null)
 
   // ** Hooks
   const router = useRouter()
@@ -69,6 +71,24 @@ const AuthProvider = ({ children }: Props) => {
       }
     }
     initAuth()
+  }, [])
+
+  
+  useEffect(function() {
+
+    (async () => {
+
+      const { data } = await axios.get('https://staging-backend.relayx.com/api/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
+
+      const [owner] = data.data.owners.filter((owner: any) => {
+        return owner.paymail === user?.paymail
+      })
+  
+      setPowcoBalance(owner?.amount)
+
+    })();
+
+
   }, [])
 
   const handleLogin = async () => {
@@ -140,7 +160,8 @@ const AuthProvider = ({ children }: Props) => {
     setIsInitialized,
     login: handleLogin,
     logout: handleLogout,
-    register: handleRegister
+    register: handleRegister,
+    powcoBalance
   }
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>

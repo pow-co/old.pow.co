@@ -28,6 +28,7 @@ import { useAuth } from 'src/hooks/useAuth'
 
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
+import Link from 'next/link'
 
 interface Props {
   settings: Settings
@@ -48,14 +49,12 @@ const UserDropdown = (props: Props) => {
   // ** Props
   const { settings } = props
 
-  const [powcoBalance, setPowcoBalance] = useState(0)
-
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   // ** Hooks
   const router = useRouter()
-  const { logout, user } = useAuth()
+  const { logout, user, powcoBalance } = useAuth()
 
   // ** Vars
   const { direction } = settings
@@ -70,25 +69,6 @@ const UserDropdown = (props: Props) => {
     }
     setAnchorEl(null)
   }
-
-  useEffect(function() {
-
-    (async () => {
-
-      const { data } = await axios.get('https://staging-backend.relayx.com/api/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
-
-      console.log('RELAYX OWNERS', data)
-
-      const [owner] = data.data.owners.filter((owner: any) => {
-        return owner.paymail === user?.paymail
-      })
-  
-      setPowcoBalance(owner?.amount)
-
-    })();
-
-
-  }, [])
 
   const styles = {
     py: 2,
@@ -197,6 +177,16 @@ const UserDropdown = (props: Props) => {
             {powcoBalance} POWCO
           </Box>
         </MenuItem>
+        {powcoBalance > 0 && (
+          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+            <Box sx={styles}>
+              <AccountOutline sx={{ mr: 2 }} />
+              <a href={'/daily-standup/'}>POWCO Daily Meeting</a>
+            </Box>
+          </MenuItem>
+        )}
+
+
         {/*
         <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
