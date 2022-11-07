@@ -134,11 +134,13 @@ const App = (props: ExtendedAppProps) => {
             name='description'
             content={`Decentralized Autonomous Organization Guided by Boost Proof of Work`}
           />
-          <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+          <meta name='keywords' content='Proof of Work, AI' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
-        </Head>
 
-        <Script src="https://one.relayx.io/relayone.js" />
+
+        </Head>
+        <Script src="https://one.relayx.io/relayone.js" ></Script>
+
 
         <AuthProvider>
           <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>

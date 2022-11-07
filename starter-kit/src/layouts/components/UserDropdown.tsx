@@ -177,11 +177,11 @@ const UserDropdown = (props: Props) => {
             {powcoBalance} POWCO
           </Box>
         </MenuItem>
-        {powcoBalance > 0 && (
+        {powcoBalance && powcoBalance > 2 && (
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
             <Box sx={styles}>
               <AccountOutline sx={{ mr: 2 }} />
-              <a href={'/daily-standup/'}>POWCO Daily Meeting</a>
+              <Link href={'/daily-standup/'}>POWCO Daily Meeting</Link>
             </Box>
           </MenuItem>
         )}

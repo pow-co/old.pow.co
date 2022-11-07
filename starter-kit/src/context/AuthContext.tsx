@@ -47,9 +47,16 @@ const AuthProvider = ({ children }: Props) => {
     const initAuth = async (): Promise<void> => {
       setIsInitialized(true)
       const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
+
+      console.log('STORED TOKEN', storedToken)
       if (storedToken) {
         setLoading(true)
-        await axios
+        await handleLogin()
+
+        setLoading(false)
+
+
+        /*await axios
           .get(authConfig.meEndpoint, {
             headers: {
               Authorization: storedToken
@@ -58,6 +65,7 @@ const AuthProvider = ({ children }: Props) => {
           .then(async response => {
             setLoading(false)
             setUser({ ...response.data.userData })
+            handleLogin()
           })
           .catch(() => {
             localStorage.removeItem('userData')
@@ -66,6 +74,7 @@ const AuthProvider = ({ children }: Props) => {
             setUser(null)
             setLoading(false)
           })
+          */
       } else {
         setLoading(false)
       }
@@ -80,23 +89,27 @@ const AuthProvider = ({ children }: Props) => {
 
       const { data } = await axios.get('https://staging-backend.relayx.com/api/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
 
+
       const [owner] = data.data.owners.filter((owner: any) => {
+        
         return owner.paymail === user?.paymail
       })
+
+      console.log('OWNER', { owner, user })
   
       setPowcoBalance(owner?.amount)
 
     })();
 
 
-  }, [])
+  }, [user])
 
   const handleLogin = async () => {
 
     console.log('HANDLE LOGIN')
 
     try {
-                  // @ts-ignore
+            // @ts-ignore
             const token = await relayone.authBeta();
 
             console.log({token})
@@ -111,16 +124,29 @@ const AuthProvider = ({ children }: Props) => {
             localStorage.setItem('powco.auth.relayx.origin', json.origin);
             localStorage.setItem('powco.auth.relayx.issued_at', json.issued_at);
 
-            localStorage.setItem('userData', Object.assign(json, {
+            localStorage.setItem('userData', JSON.stringify(Object.assign(json, {
               email: json.paymail,
               role: 'relayx'
-            }))
+            })))
             localStorage.setItem('refreshToken', token)
             localStorage.setItem('accessToken', token)
       
             setUser(json)
+
+            const routeOnLogin = localStorage.getItem('powco.auth.routeOnLogin')
+
+            if (routeOnLogin) {
+
+              localStorage.setItem('powco.auth.routeOnLogin', '/top')
+
+              router.replace(routeOnLogin)
+
+            } else {
+
+              router.replace('/top')
+
+            }
             
-            router.replace('/top')
 
     } catch(error) {
 

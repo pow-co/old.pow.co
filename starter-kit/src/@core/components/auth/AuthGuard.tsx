@@ -42,6 +42,8 @@ const AuthGuard = (props: AuthGuardProps) => {
     [router.route]
   )
 
+  console.log('--auth', auth)
+
   if (auth.loading || auth.user === null) {
     console.log("AUTH.LOADING", auth.loading)
 

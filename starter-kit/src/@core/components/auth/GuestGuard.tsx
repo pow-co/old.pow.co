@@ -24,10 +24,12 @@ const GuestGuard = (props: GuestGuardProps) => {
 
     const userData = window.localStorage.getItem('userData')
 
+    console.log(userData)
+
     if (userData) {
 
       console.log('GUEST GUARD USER DATA FOUND 2', userData)
-      router.replace('/')
+      router.replace('/daily-standup/')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.route])
