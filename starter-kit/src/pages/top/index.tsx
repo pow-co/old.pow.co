@@ -26,6 +26,7 @@ import { fetcher } from '../../@core/hooks/useAPI'
 import YouTube from 'react-youtube';
 
 import useSWR from 'swr'
+import Twetch from 'src/components/bfiles/Twetch'
 
 interface Ranking {
   content_txid: string;
@@ -198,6 +199,8 @@ function Rankings({startDate, endDate}: Dates) {
                 )}
 
                 <OnchainEvent txid={job.content_txid}/>
+
+                <Twetch txid={job.content_txid}/>
   
               </CardContent>
             </Card>
