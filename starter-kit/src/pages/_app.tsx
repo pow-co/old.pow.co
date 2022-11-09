@@ -57,7 +57,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 import useDateRange from 'src/hooks/useDateRange'
-import Script from 'next/script'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -139,8 +138,7 @@ const App = (props: ExtendedAppProps) => {
 
 
         </Head>
-        <Script src="https://one.relayx.io/relayone.js" ></Script>
-
+        <script src="https://one.relayx.io/relayone.js" async></script>
 
         <AuthProvider>
           <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
