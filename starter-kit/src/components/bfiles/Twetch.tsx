@@ -1,12 +1,11 @@
 
-const { request } = require("graphql-request");
+import { request } from 'graphql-request'
 
 const graphqlAPI = "https://gw.twetch.app";
-const authToken = "";
 
 export const postDetailQuery = async (txid: string) => {
   console.log(txid)
-  let query = `
+  const query = `
   query postDetailQuery($txid: String!) {
     allPosts(condition: { transaction: $txid }) {
       edges {
@@ -40,8 +39,6 @@ export const postDetailQuery = async (txid: string) => {
   //const result = await graphqlClient.request(query, { txid });
   const result = await request(graphqlAPI, query, { txid });
 
-  console.log('resulttwetch', result)
-
   if (!result?.allPosts?.edges || result?.allPosts?.edges.length === 0) {
     return null
   }
@@ -56,7 +53,7 @@ import { useEffect, useState } from "react"
 
 export default function Twetch({ txid }: { txid: string }) {
 
-    const [post, setPost] = useState()
+    const [post, setPost] = useState<any>()
 
     useEffect(() => {
 

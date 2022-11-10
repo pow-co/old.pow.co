@@ -23,9 +23,9 @@ function DailyStandup() {
             // @ts-ignore
             if (!window.JitsiMeetExternalAPI) { return }
 
-            const domain = 'meet.jit.si';
+            const domain = 'meet.pow.co';
             const options = {
-                roomName: 'POWCO-Daily-Meeting',
+                roomName: 'powco-holders-daily-meeting',
                 width: '100%',
                 height: 700,
                 parentNode: document.querySelector('#jitsi-daily-meeting'),
