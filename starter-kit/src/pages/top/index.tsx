@@ -62,6 +62,15 @@ function OnchainEvent({ txid }: {txid: string}) {
     }
   }
 
+  if (event.app === 'egoboost.vip') {
+
+    return <>
+    <h3><a className="egoboost-link" href={`https://egoboost.vip`}>EgoBoost.VIP</a></h3>
+
+    <h3>Paymail: {event.content?.paymail}</h3>
+  </>
+  }
+
   if (event.app === '1HWaEAD5TXC2fWHDiua9Vue3Mf8V1ZmakN') { // askbitcoin.ai
 
     if (event.type === 'question') {
@@ -99,9 +108,6 @@ function OnchainEvent({ txid }: {txid: string}) {
 
   return (
     <>
-      <h1>{data.events[0].content.title}</h1>
-      <h4>by {data.events[0].content.author_name}</h4>
-      <p>txid: {txid}</p>    
     </>
   )
 

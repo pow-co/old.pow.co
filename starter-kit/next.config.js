@@ -27,6 +27,6 @@ module.exports = withTM({
     return config
   },
   images: {
-    domains: ['doge.bitcoinfiles.org', 'bitcoinfileserver.com', 'media.twetch.app', 'cimg.twetch.com', '*']
+    domains: ['dogefiles.twetch.app', 'doge.bitcoinfiles.org', 'bitcoinfileserver.com', 'media.twetch.app', 'cimg.twetch.com', '*']
   }
 })
