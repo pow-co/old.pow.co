@@ -23,7 +23,7 @@ function DailyStandup() {
             // @ts-ignore
             if (!window.JitsiMeetExternalAPI) { return }
 
-            const domain = 'meet.pow.co';
+            const domain = 'meet.jit.si';
             const options = {
                 roomName: 'powco-holders-daily-meeting',
                 width: '100%',
