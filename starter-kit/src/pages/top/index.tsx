@@ -28,6 +28,13 @@ import YouTube from 'react-youtube';
 import useSWR from 'swr'
 import Twetch from 'src/components/bfiles/Twetch'
 
+import { useSnackbar } from 'notistack';
+
+import BoostpowButton from 'boostpow-button'
+import { Box } from '@mui/material'
+import toast from 'react-hot-toast'
+//import BoostpowButton from '/Users/zyler/github/pow-co/boostpow-button'
+
 interface Ranking {
   content_txid: string;
   content_type?: string;
@@ -51,8 +58,6 @@ function OnchainEvent({ txid }: {txid: string}) {
 
   const [event] = data.events
 
-  console.log('EVENT', event)
-
   if (event.app === 'powstream.com') {
 
     if (event.type === 'youtube_video_metadata' && event.author === '1D1hSyDc7UF4KbGFTSSXLirCBepjcN19GN') {
@@ -74,8 +79,6 @@ function OnchainEvent({ txid }: {txid: string}) {
   if (event.app === '1HWaEAD5TXC2fWHDiua9Vue3Mf8V1ZmakN') { // askbitcoin.ai
 
     if (event.type === 'question') {
-
-      console.log('askbitcoin.ai.question', event)
       
       return <>
         <h3><a className="askbitcoinLink" href={`https://askbitcoin.ai/questions/${event.txid}`}>AskBitcoin.AI Question:</a></h3>
@@ -86,8 +89,6 @@ function OnchainEvent({ txid }: {txid: string}) {
 
     if (event.type === 'answer') {
 
-      console.log('askbitcoin.ai.answer', event)
-
       return <>
         <h3><a className="askbitcoinLink" href={`https://askbitcoin.ai/answers/${event.txid}`}>AskBitcoin.AI Answer:</a></h3>
         <h4>{event. content.content}</h4>
@@ -97,8 +98,6 @@ function OnchainEvent({ txid }: {txid: string}) {
   }
 
   if (event.app === 'boostpatriots.win' && event.author === "18h6yhKBBqXQge6XRauMTeEaQ9HF4jR1qV") {
-
-    console.log('BOOST PATRIOTS', event)
 
     return <>
       <h3><a rel="noreferrer"  href={`https://boostpatriots.win${event.content.href}`}>BoostPatriots.Win</a></h3>
@@ -114,8 +113,6 @@ function OnchainEvent({ txid }: {txid: string}) {
 }
 
 function YoutubeMetadataOnchain({txid, event}: {txid: string, event: any}) {
-
-  console.log('youtube', {txid, event})
 
   const opts = {
     //height: '390',
@@ -141,15 +138,15 @@ function Rankings({startDate, endDate}: Dates) {
 
   const { data, error, loading, refresh } = useAPI(`/api/v1/boost/rankings?start_date=${moment(start).unix()}`)
 
-  console.log('result', { data, error, loading })
+  const snackbar = useSnackbar();
+
+  //const { enqueueSnackbar } = useSnackbar();
+
+  console.log({ snackbar })
 
   useBus(
     'date_range_from_updated',
     ({value}) => {
-      console.log('DATE RANGE FROM UPDATED VIA BUS!', value)
-
-      console.log('moment', moment(value).toDate())
-      console.log('unix', moment(value).unix())
 
       setStartDate(value)
 
@@ -179,6 +176,39 @@ function Rankings({startDate, endDate}: Dates) {
 
   const { rankings } = data;
 
+  function onBoostSuccess(result: any) {
+    console.log('boost success', result)
+
+    toast('boost success')
+  }
+
+  function onBoostError(error: any) {
+    console.log('boost error', error)
+    toast('boost error')
+
+    
+  }
+
+  function onBoostClick(event: any) {
+    console.log('boost clicked', event)
+
+    toast('boost clicked')
+
+  }
+
+  function Boost({sx, job}: any) {
+    return <Box sx={sx}>
+      <BoostpowButton
+          content={job.content_txid}
+          currency={'USD'}
+          value={0.05}
+          onSuccess={onBoostSuccess}
+          onError={onBoostError}
+          onClick={onBoostClick}
+        />
+    </Box>
+  }
+
   return (
     <Grid container spacing={6}>
 
@@ -187,8 +217,12 @@ function Rankings({startDate, endDate}: Dates) {
           return (
             <Grid key={job.content_txid} item xs={12}>
             <Card>
-              <CardHeader title={`${job.difficulty} ${job.content_type || ''}`}></CardHeader>
+              <CardHeader sx={{}}
+                title={`${job.difficulty} ${job.content_type || ''}`}
+              ></CardHeader>
+
               <CardContent>
+
                 <small ><Link target="_blank" rel="noreferrer"  href={`https://whatsonchain.com/${job.content_txid}`}>
                   <WhiteLink>{job.content_txid}</WhiteLink>
                   </Link></small>
@@ -208,6 +242,8 @@ function Rankings({startDate, endDate}: Dates) {
 
                 <Twetch txid={job.content_txid}/>
   
+                <Boost sx={{float: 'right', maxWidth: '100px'}} job={job} />
+
               </CardContent>
             </Card>
           </Grid>
@@ -219,8 +255,6 @@ function Rankings({startDate, endDate}: Dates) {
 }
 
 const Top = () => {
-
-  console.log("TOP INDEX PAGE")
 
   return <>
     <DateSpan.Consumer>

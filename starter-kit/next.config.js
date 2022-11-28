@@ -16,7 +16,8 @@ module.exports = withTM({
   reactStrictMode: false,
   experimental: {
     esmExternals: false,
-    jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
+    jsconfigPaths: true, // enables it for both jsconfig.json and tsconfig.json
+    appDir: false
   },
   webpack: config => {
     config.resolve.alias = {

@@ -61,8 +61,6 @@ export default function Twetch({ txid }: { txid: string }) {
 
             const result = await postDetailQuery(txid)
 
-            console.log("twetch.post.detail", result)
-
             setPost(result)
 
         })()

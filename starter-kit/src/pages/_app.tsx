@@ -57,6 +57,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 // ** Global css styles
 import '../../styles/globals.css'
 import useDateRange from 'src/hooks/useDateRange'
+import { SnackbarProvider } from 'notistack'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -148,11 +149,19 @@ const App = (props: ExtendedAppProps) => {
                   <ThemeComponent settings={settings}>
                     <WindowWrapper>
                       <Guard authGuard={authGuard} guestGuard={guestGuard}>
-                        {/*<AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>*/}
-                          <DateSpan.Provider value={dateSpan}>
-                            {getLayout(<Component {...pageProps} />)}
-                          </DateSpan.Provider>
-                        {/*</AclGuard>*/}
+                        <SnackbarProvider
+                          maxSnack={3}
+                          anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                          }}
+                        >
+                          {/*<AclGuard aclAbilities={aclAbilities} guestGuard={guestGuard}>*/}
+                            <DateSpan.Provider value={dateSpan}>
+                              {getLayout(<Component {...pageProps} />)}
+                            </DateSpan.Provider>
+                          {/*</AclGuard>*/}
+                        </SnackbarProvider>
                       </Guard>
                     </WindowWrapper>
                     <ReactHotToast>
