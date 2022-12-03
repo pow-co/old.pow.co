@@ -6,6 +6,7 @@ jobs:
       - image: circleci/node:16
     steps:
       - checkout
+      - add_ssh_keys
       - run:
           name: Install Dependencies
           command: npm install
