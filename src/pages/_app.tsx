@@ -129,10 +129,10 @@ const App = (props: ExtendedAppProps) => {
     
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>Boost POW DAO</title>
+          <title>POWCO Proof of Work Co-Op</title>
           <meta
             name='description'
-            content={`Decentralized Autonomous Organization Guided by Boost Proof of Work`}
+            content={`Cooperative Club Guided by Boost Proof of Work`}
           />
           <meta name='keywords' content='Proof of Work, AI' />
           <meta name='viewport' content='initial-scale=1, width=device-width' />
