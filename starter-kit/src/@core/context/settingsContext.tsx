@@ -70,8 +70,6 @@ const initialSettings: Settings = {
   appBar: themeConfig.layout === 'horizontal' && themeConfig.appBar === 'hidden' ? 'fixed' : themeConfig.appBar
 }
 
-console.log("INITIAL SETTINGS", initialSettings)
-
 const staticSettings = {
   appBar: initialSettings.appBar,
   footer: initialSettings.footer,

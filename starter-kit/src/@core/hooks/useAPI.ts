@@ -22,13 +22,7 @@ export function fetcher(params: any) {
 
 export default function useAPI(path: string) {
 
-  console.log('USE API')
-
-  console.log('useApi', { path });
-
   let { data, error, mutate: refresh, isValidating: loading } = useSWR(`${API_BASE}${path}`, fetcher);
-
-  console.log(data)
 
   return { data, error, refresh, loading };
 }

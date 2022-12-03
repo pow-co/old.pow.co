@@ -11,8 +11,6 @@ const Top = () => {
 
   const { data, error, loading } = useAPI('/api/v1/boost/jobs')
 
-  console.log('result', { data, error, loading })
-
   if (!data && !error) {
     return <>Loading</>
   }

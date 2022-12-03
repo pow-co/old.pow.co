@@ -4,7 +4,7 @@ import { request } from 'graphql-request'
 const graphqlAPI = "https://gw.twetch.app";
 
 export const postDetailQuery = async (txid: string) => {
-  console.log(txid)
+  
   const query = `
   query postDetailQuery($txid: String!) {
     allPosts(condition: { transaction: $txid }) {

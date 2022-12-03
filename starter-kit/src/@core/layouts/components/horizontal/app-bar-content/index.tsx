@@ -62,14 +62,12 @@ const AppBarContent = (props: Props) => {
 
   
   function handleChangeFrom(value: any) {
-    console.log('handle change from', value)
     setStartDate(value)
 
     dispatch({ type: 'date_range_from_updated', value })
   }
 
   function handleChangeTo(value: any) {
-    console.log('handle change to', value)
     setEndDate(value)
 
     dispatch({ type: 'date_range_to_updated', value })

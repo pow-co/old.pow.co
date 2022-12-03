@@ -18,11 +18,7 @@ export function OnChainImage({ txid, alt }: { txid: string, alt?: string }) {
 
     const url = `${bitcoinfilesProvider}/${txid}`
 
-    console.log('useSWR', url)
-
     const { data } = useSWR(url, fetcher)
-
-    console.log('useSWR.result', { url, data })
 
     return <Image alt={alt} data={data} />
 }

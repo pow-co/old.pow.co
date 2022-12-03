@@ -24,21 +24,15 @@ const GuestGuard = (props: GuestGuardProps) => {
 
     const userData = window.localStorage.getItem('userData')
 
-    console.log(userData)
-
     if (userData) {
 
-      console.log('GUEST GUARD USER DATA FOUND 2', userData)
       router.replace('/daily-standup/')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.route])
 
-  console.log("IN GUEST GUARD", auth)
-
   if (auth.loading || (!auth.loading && auth.user !== null)) {
 
-    console.log('auth.loading || (!auth.loading && auth.user !== null)')
     return fallback
   }
 

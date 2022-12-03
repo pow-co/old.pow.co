@@ -113,8 +113,6 @@ const LoginPage = () => {
 
   const onSubmit = async (event: any) => {
 
-    console.log('ON SUBMIT')
-
     event.preventDefault()
 
     auth.login()

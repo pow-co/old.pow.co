@@ -23,8 +23,6 @@ const AuthGuard = (props: AuthGuardProps) => {
         return
       }
 
-      console.log('AUTH GUARD', { user: auth.user })
-
       if (auth.user === null && !window.localStorage.getItem('userData')) {
         if (router.asPath !== '/') {
           router.replace({
@@ -36,16 +34,12 @@ const AuthGuard = (props: AuthGuardProps) => {
         }
       }
 
-      console.log('auth passed')
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [router.route]
   )
 
-  console.log('--auth', auth)
-
   if (auth.loading || auth.user === null) {
-    console.log("AUTH.LOADING", auth.loading)
 
     return fallback
   }

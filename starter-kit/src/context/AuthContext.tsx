@@ -48,7 +48,6 @@ const AuthProvider = ({ children }: Props) => {
       setIsInitialized(true)
       const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
 
-      console.log('STORED TOKEN', storedToken)
       if (storedToken) {
         setLoading(true)
         await handleLogin()
@@ -94,8 +93,6 @@ const AuthProvider = ({ children }: Props) => {
         
         return owner.paymail === user?.paymail
       })
-
-      console.log('OWNER', { owner, user })
   
       setPowcoBalance(owner?.amount)
 
@@ -106,16 +103,12 @@ const AuthProvider = ({ children }: Props) => {
 
   const handleLogin = async () => {
 
-    console.log('HANDLE LOGIN')
-
     try {
             // @ts-ignore
             const token = await relayone.authBeta();
 
-            console.log({token})
-
             const json = JSON.parse(atob(token.split('.')[0]));
-            console.log({json})
+
             localStorage.setItem('powco.auth.type', 'relayx');
             localStorage.setItem('powco.auth.relayx.token', token);
             localStorage.setItem('powco.auth.relayx.auth', JSON.stringify(json));

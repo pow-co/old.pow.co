@@ -45,8 +45,6 @@ const UserLayout = ({ children }: Props) => {
    */
   const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
 
-  console.log('LAYOUT', settings.layout)
-
   return (
     <Layout
       hidden={hidden}

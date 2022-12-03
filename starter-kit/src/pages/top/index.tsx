@@ -45,6 +45,7 @@ interface Ranking {
 
 const WhiteLink = styled.a`
   color: white;
+  font-size: 70%;
 `
 
 function OnchainEvent({ txid }: {txid: string}) {
@@ -140,10 +141,6 @@ function Rankings({startDate, endDate}: Dates) {
 
   const snackbar = useSnackbar();
 
-  //const { enqueueSnackbar } = useSnackbar();
-
-  console.log({ snackbar })
-
   useBus(
     'date_range_from_updated',
     ({value}) => {
@@ -177,20 +174,17 @@ function Rankings({startDate, endDate}: Dates) {
   const { rankings } = data;
 
   function onBoostSuccess(result: any) {
-    console.log('boost success', result)
 
     toast('boost success')
   }
 
   function onBoostError(error: any) {
-    console.log('boost error', error)
-    toast('boost error')
 
+    toast('boost error')
     
   }
 
   function onBoostClick(event: any) {
-    console.log('boost clicked', event)
 
     toast('boost clicked')
 
@@ -209,6 +203,10 @@ function Rankings({startDate, endDate}: Dates) {
     </Box>
   }
 
+  for (let job of rankings) {
+    console.log('job', job)
+  }
+
   return (
     <Grid container spacing={6}>
 
@@ -218,14 +216,14 @@ function Rankings({startDate, endDate}: Dates) {
             <Grid key={job.content_txid} item xs={12}>
             <Card>
               <CardHeader sx={{}}
-                title={`${job.difficulty} ${job.content_type || ''}`}
+                title={<div><span>{job.difficulty} ⛏️</span> <small><Link target="_blank" rel="noreferrer"  href={`https://whatsonchain.com/${job.content_txid}`}>
+                <WhiteLink>{job.content_txid}</WhiteLink>
+                </Link></small></div>}
               ></CardHeader>
 
               <CardContent>
 
-                <small ><Link target="_blank" rel="noreferrer"  href={`https://whatsonchain.com/${job.content_txid}`}>
-                  <WhiteLink>{job.content_txid}</WhiteLink>
-                  </Link></small>
+                
 
                 {job.content_type?.match('image') && (
                   
@@ -236,6 +234,11 @@ function Rankings({startDate, endDate}: Dates) {
                 {job.content_type?.match('text/plain') && (
                   
                   <p>{job.content_text}</p>
+                )}
+
+                {job.content_type?.match('markdown') && (
+                  
+                  <div dangerouslySetInnerHTML={{ __html: job.content_text || ''}} />
                 )}
 
                 <OnchainEvent txid={job.content_txid}/>
