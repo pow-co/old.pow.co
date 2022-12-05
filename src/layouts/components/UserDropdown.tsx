@@ -19,6 +19,7 @@ import CogOutline from 'mdi-material-ui/CogOutline'
 import CurrencyUsd from 'mdi-material-ui/CurrencyUsd'
 import EmailOutline from 'mdi-material-ui/EmailOutline'
 import LogoutVariant from 'mdi-material-ui/LogoutVariant'
+import LoginVariant from 'mdi-material-ui/LoginVariant'
 import AccountOutline from 'mdi-material-ui/AccountOutline'
 import MessageOutline from 'mdi-material-ui/MessageOutline'
 import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
@@ -86,6 +87,11 @@ const UserDropdown = (props: Props) => {
 
   const handleLogout = () => {
     logout()
+    handleDropdownClose()
+  }
+
+  const handleLogin = () => {
+    router.push('/login')
     handleDropdownClose()
   }
 
@@ -171,20 +177,24 @@ const UserDropdown = (props: Props) => {
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        {user && <>
+          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
           <Box sx={styles}>
             <AccountOutline sx={{ mr: 2 }} />
             {powcoBalance} POWCO
           </Box>
-        </MenuItem>
-        {powcoBalance && powcoBalance > 2 && (
-          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
-            <Box sx={styles}>
-              <AccountOutline sx={{ mr: 2 }} />
-              <Link href={'/daily-standup/'}>POWCO Daily Meeting</Link>
-            </Box>
           </MenuItem>
-        )}
+          {powcoBalance && powcoBalance > 2 && (
+            <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+              <Box sx={styles}>
+                <AccountOutline sx={{ mr: 2 }} />
+                <Link href={'/daily-standup/'}>POWCO Daily Meeting</Link>
+              </Box>
+            </MenuItem>
+          )}
+
+        </>}
+
 
 
         {/*
@@ -202,16 +212,31 @@ const UserDropdown = (props: Props) => {
         </MenuItem>
         <Divider />*/}
 
-        <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
-          <LogoutVariant
+        {!!user ? (
+          <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
+            <LogoutVariant
+              sx={{
+                mr: 2,
+                fontSize: '1.375rem',
+                color: 'text.secondary'
+              }}
+            />
+            Logout
+          </MenuItem>
+        ) : (
+          <MenuItem sx={{ py: 2 }} onClick={handleLogin}>
+          <LoginVariant
             sx={{
               mr: 2,
               fontSize: '1.375rem',
               color: 'text.secondary'
             }}
           />
-          Logout
+          Login
         </MenuItem>
+        )}
+
+        
       </Menu>
     </Fragment>
   )
