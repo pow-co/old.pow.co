@@ -1,3 +1,5 @@
 .env
 stag_address=1HsZZNuJ9pbfPNYFGovDadz8nkTTmW2EWU
 node_modules/
+out/
+.next/

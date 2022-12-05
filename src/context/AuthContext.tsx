@@ -136,7 +136,7 @@ const AuthProvider = ({ children }: Props) => {
 
             } else {
 
-              router.replace('/top')
+              //router.replace('/top')
 
             }
             
