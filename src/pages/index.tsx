@@ -24,7 +24,12 @@ const Home = () => {
   const router = useRouter()
 
   useEffect(() => {
-    if (!router.isReady) {
+
+    const homeRoute = getHomeRoute('')
+
+    router.replace(homeRoute)
+
+    /*if (!router.isReady) {
       return
     }
 
@@ -34,6 +39,7 @@ const Home = () => {
       // Redirect user to Home URL
       router.replace(homeRoute)
     }
+    */
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

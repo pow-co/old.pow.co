@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack');
 
 /** @type {import('next').NextConfig} */
 
@@ -24,6 +25,13 @@ module.exports = withTM({
       ...config.resolve.alias,
       apexcharts: path.resolve(__dirname, './node_modules/apexcharts-clevision')
     }
+
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+          process: 'process/browser',
+          Buffer: ['buffer', 'Buffer'],
+      }),
+  );
 
     return config
   },

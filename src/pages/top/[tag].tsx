@@ -23,7 +23,7 @@ import styled from 'styled-components'
 
 import moment from 'moment'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { DateSpan, Dates } from '../_app'
 
@@ -44,6 +44,7 @@ import { Box } from '@mui/material'
 import toast from 'react-hot-toast'
 
 import loader from '../../loader'
+import useDateRange from 'src/hooks/useDateRange'
 
 interface Ranking {
   content_txid: string;
@@ -156,6 +157,21 @@ function Rankings({startDate, endDate}: Dates) {
   const [start, setStartDate] = useState(startDate)
 
   const { data, error, refresh } = useAPI(`/api/v1/boost/rankings?tag=${tag}&start_date=${moment(start).unix()}`)
+
+  const { setStartDate: globalSetStartDate } = useDateRange()
+
+
+  useEffect(() => {
+
+      setStartDate(moment().subtract(5, 'years').toDate())
+
+      //globalSetStartDate(moment().subtract(5, 'years').toDate())
+
+      //refresh()
+
+
+  }, [])
+
 
   useBus(
     'date_range_from_updated',

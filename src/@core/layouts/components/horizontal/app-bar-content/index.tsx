@@ -97,6 +97,9 @@ const AppBarContent = (props: Props) => {
           </StyledLink>
 
         </Link>
+        <Link href='/tags' passHref>
+          Top Tags
+        </Link>
         <LocalizationProvider dateAdapter={AdapterMoment}>
           Top Boosted Since
           <MobileDatePicker
