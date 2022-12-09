@@ -105,7 +105,6 @@ const AuthProvider = ({ children }: Props) => {
     setIsInitialized(false)
     window.localStorage.removeItem('userData')
     window.localStorage.removeItem(authConfig.storageTokenKeyName)
-    router.push('/login')
   }
 
   const handleRegister = (params: RegisterParams, errorCallback?: ErrCallbackType) => {

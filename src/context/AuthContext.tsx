@@ -38,7 +38,7 @@ const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<UserDataType | null>(defaultProvider.user)
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading)
   const [isInitialized, setIsInitialized] = useState<boolean>(defaultProvider.isInitialized)
-  const [powcoBalance, setPowcoBalance] = useState(null)
+  const [powcoBalance, setPowcoBalance] = useState<number>(0)
 
   // ** Hooks
   const router = useRouter()
@@ -88,13 +88,26 @@ const AuthProvider = ({ children }: Props) => {
 
       const { data } = await axios.get('https://staging-backend.relayx.com/api/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
 
+      console.log('OWNERS', data.data.owners)
 
       const [owner] = data.data.owners.filter((owner: any) => {
         
         return owner.paymail === user?.paymail
       })
+
+      console.log('OWNER', owner)
+      console.log('USER', user)
+
+      if (user && owner?.amount) {
+
+        setPowcoBalance(owner?.amount)
+
+      } else {
+          
+        setPowcoBalance(0);
   
-      setPowcoBalance(owner?.amount)
+      }
+
 
     })();
 
@@ -136,7 +149,7 @@ const AuthProvider = ({ children }: Props) => {
 
             } else {
 
-              //router.replace('/top')
+              router.replace('/top')
 
             }
             

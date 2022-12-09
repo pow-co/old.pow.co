@@ -130,7 +130,7 @@ const App = (props: ExtendedAppProps) => {
     
       <CacheProvider value={emotionCache}>
         <Head>
-          <title>POWCO</title>
+          <title>Proof of Work Web</title>
           <meta
             name='description'
             content={`The Internet As Seen Through Proof of Work`}
