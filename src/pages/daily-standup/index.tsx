@@ -18,6 +18,65 @@ import axios from 'axios'
 
 const MINIMUM_POWCO_BALANCE = 3
 
+const events = [
+    'cameraError',
+    'avatarChanged',
+    'audioAvailabilityChanged',
+    'audioMuteStatusChanged',
+    'breakoutRoomsUpdated',
+    'browserSupport',
+    'contentSharingParticipantsChanged',
+    'dataChannelOpened',
+    'endpointTextMessageReceived',
+    'faceLandmarkDetected',
+    'errorOccurred',
+    'knockingParticipant',
+    'largeVideoChanged',
+    'log',
+    'micError',
+    'screenSharingStatusChanged',
+    'dominantSpeakerChanged',
+    'raiseHandUpdated',
+    'tileViewChanged',
+    'chatUpdated',
+    'incomingMessage',
+    'mouseEnter',
+    'mouseLeave',
+    'mouseMove',
+    'toolbarButtonClicked',
+    'outgoingMessage',
+    'displayNameChange',
+    'deviceListChanged',
+    'emailChange',
+    'feedbackSubmitted',
+    'filmstripDisplayChanged',
+    'moderationStatusChanged',
+    'moderationParticipantApproved',
+    'moderationParticipantRejected',
+    'participantJoined',
+    'participantKickedOut',
+    'participantLeft',
+    'participantRoleChanged',
+    'participantsPaneToggled',
+    'passwordRequired',
+    'videoConferenceJoined',
+    'videoConferenceLeft',
+    'videoAvailabilityChanged',
+    'videoMuteStatusChanged',
+    'videoQualityChanged',
+    'readyToClose',
+    'recordingLinkAvailable',
+    'recordingStatusChanged',
+    'subjectChange',
+    'suspendDetected',
+    'peerConnectionFailure'
+]
+
+async function handleJitsiEvent(type: string, event: any) {
+
+    //TODO: Pipe the event to websocket server
+}
+
 function DailyStandup() {
 
     const { user, powcoBalance } = useAuth()
@@ -28,20 +87,28 @@ function DailyStandup() {
 
     useEffect(() => {
 
-        setNJitsis(nJitsis + 1)
-
         if (user && powcoBalance && powcoBalance >= MINIMUM_POWCO_BALANCE) {
 
             // @ts-ignore
-            if (!window.JitsiMeetExternalAPI) { return }
+            if (!window.JitsiMeetExternalAPI) {
 
-            if (jitsiInitialized) { return }
+                setTimeout(() => {
+                    setNJitsis(nJitsis + 1)
+                }, 520)
+                
+                return
+            }
+
+            if (jitsiInitialized) {
+
+                return
+            }
 
             setJitsiInitialized(true)
 
             const token = localStorage.getItem('powco.auth.relayx.token');
 
-            axios.post('https://pow.co/api/v1/jaas/auth', {
+            axios.post('https://tokenmeet.live/api/v1/jaas/auth', {
                 wallet: 'relay',
                 paymail: user.paymail,
                 token
@@ -68,11 +135,35 @@ function DailyStandup() {
                 // @ts-ignore
                 var jitsi = new window.JitsiMeetExternalAPI(domain, options);
 
-                console.log({ nJitsis })
+                // @ts-ignore
+                window.jitsi = jitsi
+
+                const handlers: any = events.reduce((acc: any, type: string) => {
+
+                    acc[type] = (event: any) => {
+
+                        if (event) {
+                            handleJitsiEvent(type, event)
+                        }                    
+                    }
+
+                    return acc
+
+                }, {})
+
+                for (let type of events) {
+                        
+                        jitsi.addListener(type, handlers[type])
+                }
 
                 return function() {
-                        
-                        jitsi.dispose()
+
+                    for (let type of events) {
+                            
+                        jitsi.removeListener(type, handlers[type])
+                    }
+                            
+                    jitsi.dispose()
                 }
             })
             .catch(error => {
@@ -80,13 +171,10 @@ function DailyStandup() {
                 console.log('AUTH ERROR', error)
 
             })
-
-
-
         }
 
     // @ts-ignore
-    }, [window.JitsiMeetExternalAPI])
+    }, [window.JitsiMeetExternalAPI], nJitsis)
 
     return (
 
@@ -149,3 +237,21 @@ DailyStandup.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>;
 DailyStandup.guestGuard = false;
 
 export default DailyStandup;
+
+interface cameraError {
+    type: string;
+    message: string;
+}
+
+interface avatarChanged {
+    id: string, // the id of the participant that changed his avatar.
+    avatarURL: string // the new avatar URL.
+}
+
+interface audioAvailabilityChanged {
+    available: boolean // new available status - boolean
+}
+
+interface audioMuteStatusChanged {
+    muted: boolean // new muted status - boolean
+}

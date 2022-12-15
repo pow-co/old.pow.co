@@ -50,6 +50,7 @@ export const postDetailQuery = async (txid: string) => {
 import { Box } from "@mui/material";
 import Image from "next/image";
 import { useEffect, useState } from "react"
+import loader from 'src/loader';
 
 export default function Twetch({ txid }: { txid: string }) {
 
@@ -70,8 +71,8 @@ export default function Twetch({ txid }: { txid: string }) {
     if (post) {
         return <Box>
             <p>
-                <Image style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={'https://media.twetch.app/dyt/256x256/23927e8fe0014aef65fd88c345d3dd49f4ee3db145c318c7157df61194519223.png'} />
-                <Image style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={post?.userByUserId?.icon} />
+                <Image loader={loader} style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={'https://media.twetch.app/dyt/256x256/23927e8fe0014aef65fd88c345d3dd49f4ee3db145c318c7157df61194519223.png'} />
+                <Image loader={loader} style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={post?.userByUserId?.icon} />
                 u/{post?.userId} {post?.userByUserId?.name}
             </p>
             <br/>
