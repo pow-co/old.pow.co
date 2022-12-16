@@ -58,6 +58,7 @@ import 'react-perfect-scrollbar/dist/css/styles.css'
 import '../../styles/globals.css'
 import useDateRange from 'src/hooks/useDateRange'
 import { SnackbarProvider } from 'notistack'
+import { usePowcoWebsocket } from 'src/hooks/useWebsocket'
 
 // ** Extend App Props with Emotion
 type ExtendedAppProps = AppProps & {
@@ -125,6 +126,10 @@ const App = (props: ExtendedAppProps) => {
   //const aclAbilities = Component.acl ?? defaultACLObj
 
   const dateSpan = useDateRange()
+
+  const { isConnected } = usePowcoWebsocket()
+
+  console.debug('powco websocket connected: ', isConnected)
 
   return (
     

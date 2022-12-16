@@ -16,6 +16,9 @@ import Button from '@mui/material/Button'
 
 import axios from 'axios'
 
+import { useTokenMeetLiveWebsocket } from 'src/hooks/useWebsocket';
+import { Socket } from 'socket.io-client/build/esm/socket';
+
 const MINIMUM_POWCO_BALANCE = 3
 
 const events = [
@@ -72,10 +75,6 @@ const events = [
     'peerConnectionFailure'
 ]
 
-async function handleJitsiEvent(type: string, event: any) {
-
-    //TODO: Pipe the event to websocket server
-}
 
 function DailyStandup() {
 
@@ -84,6 +83,28 @@ function DailyStandup() {
     const [jitsiInitialized, setJitsiInitialized] = useState<boolean>()
 
     const [nJitsis, setNJitsis] = useState<number>(1)
+
+    const { isConnected, socket } = useTokenMeetLiveWebsocket()
+
+    const [jitsiJWT, setJitsiJWT] = useState<string>()
+
+    const roomName = 'vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/SampleAppWorthyTruthsClarifyClearly'
+
+    async function handleJitsiEvent(type: string, event: any, socket: Socket) {
+
+        //TODO: Pipe the event to websocket server
+
+        console.log('JIITSI EVENT', {type, event, user})
+
+        socket.emit('jitsi-event', {
+            type,
+            event,
+            user,
+            jwt: jitsiJWT,
+            timestamp: new Date().toISOString(),
+            roomName
+        })
+    }
 
     useEffect(() => {
 
@@ -117,9 +138,11 @@ function DailyStandup() {
 
                 const domain = "8x8.vc";
 
+                setJitsiJWT(data.jwt)
+
                 const options = {
                     jwt: data.jwt,                
-                    roomName: 'vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/SampleAppWorthyTruthsClarifyClearly',
+                    roomName,
                     width: '100%',
                     height: 700,
                     parentNode: document.querySelector('#jitsi-daily-meeting'),
@@ -138,12 +161,38 @@ function DailyStandup() {
                 // @ts-ignore
                 window.jitsi = jitsi
 
+                socket.on('jitsi.executeCommand', message => {
+
+                    const { command, params } = message
+
+                    console.log('jitsi.executeCommand', {command, params})
+
+                    jitsi.executeCommand(command, params)
+
+                })
+
+
+                socket.on('jitsi.callFunction', async (message) => {
+
+                    const { method, params, uid } = message
+
+                    console.log('jitsi.callFunction', {method, params, uid})
+
+                    const result = await jitsi[method](...params)
+
+                    socket.emit('jitsi.callFunctionResult', {
+                        uid,
+                        result
+                    })
+                    
+                })
+
                 const handlers: any = events.reduce((acc: any, type: string) => {
 
                     acc[type] = (event: any) => {
 
                         if (event) {
-                            handleJitsiEvent(type, event)
+                            handleJitsiEvent(type, event, socket)
                         }                    
                     }
 
@@ -185,6 +234,7 @@ function DailyStandup() {
                 <Card>
                 <CardHeader title={`Daily Discussion of Boostpow Costly Signals`}></CardHeader>
                 <CardContent>
+                    <p>Websocket Connected? {isConnected ? 'true': 'false'}</p>
 
                     {user ? (
                         <>
