@@ -33,7 +33,7 @@ import useSWR from 'swr'
 
 import Twetch from 'src/components/bfiles/Twetch'
 
-//import BoostpowButton from 'boostpow-button'
+import BoostpowButton from 'boostpow-button'
 
 import { Box } from '@mui/material'
 
@@ -196,14 +196,14 @@ function Rankings({startDate, endDate}: Dates) {
 
   function Boost({sx, job}: any) {
     return <Box sx={sx}>
-      {/*<BoostpowButton
+      <BoostpowButton
           content={job.content_txid}
           currency={'USD'}
           value={0.05}
           onSuccess={onBoostSuccess}
           onError={onBoostError}
           onClick={onBoostClick}
-  />*/}
+        />
     </Box>
   }
 
@@ -270,3 +270,4 @@ const Top = () => {
 }
 
 export default Top
+

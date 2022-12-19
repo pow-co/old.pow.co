@@ -25,9 +25,9 @@ const Home = () => {
 
   useEffect(() => {
 
-    //const homeRoute = getHomeRoute('')
+    const homeRoute = getHomeRoute('')
 
-    //router.replace(homeRoute)
+    router.replace(homeRoute)
 
     /*if (!router.isReady) {
       return
