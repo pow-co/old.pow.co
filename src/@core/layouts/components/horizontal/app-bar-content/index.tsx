@@ -100,6 +100,9 @@ const AppBarContent = (props: Props) => {
         <Link href='/tags' passHref>
           Top Tags
         </Link>
+        <Link href='/posts/new' passHref>
+          New Post
+        </Link>
         <LocalizationProvider dateAdapter={AdapterMoment}>
           Top Boosted Since
           <MobileDatePicker

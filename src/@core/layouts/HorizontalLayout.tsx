@@ -27,6 +27,9 @@ import { hexToRGBA } from 'src/@core/styles/utils/hex-to-rgba'
 // ** Styled Component
 import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
 
+import SearchBar from '../components/search/SearchBar'
+
+
 const HorizontalLayoutWrapper = styled('div')({
   display: 'flex',
   minHeight: '100vh',
@@ -117,7 +120,7 @@ const HorizontalLayout = (props: LayoutProps) => {
           </Toolbar>
         </Box>
 
-        {/* Navigation Menu
+        {/* Navigation Menu */}
         {navHidden ? null : (
           <Box className='layout-horizontal-nav' sx={{ width: '100%' }}>
             <Toolbar
@@ -129,11 +132,10 @@ const HorizontalLayout = (props: LayoutProps) => {
                   `${(theme.mixins.toolbar.minHeight as number) - (skin === 'bordered' ? 1 : 0)}px !important`
               }}
             >
-              {(userHorizontalNavMenuContent && userHorizontalNavMenuContent(props)) || <Navigation {...props} />}
+              {(userHorizontalNavMenuContent && userHorizontalNavMenuContent(props)) || <SearchBar  />}
             </Toolbar>
           </Box>
         )}
-         */}
       </AppBar>
 
       {/* Content */}

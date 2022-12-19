@@ -59,14 +59,20 @@ export default function Twetch({ txid }: { txid: string }) {
     useEffect(() => {
 
         (async () => {
+          
+          if (txid) {
+            console.log("TWETCH", {txid})
 
             const result = await postDetailQuery(txid)
 
             setPost(result)
+          }
+
+
 
         })()
 
-    }, [])
+    }, [txid])
 
     if (post) {
         return <Box>

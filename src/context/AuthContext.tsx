@@ -88,15 +88,10 @@ const AuthProvider = ({ children }: Props) => {
 
       const { data } = await axios.get('https://staging-backend.relayx.com/api/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
 
-      console.log('OWNERS', data.data.owners)
-
       const [owner] = data.data.owners.filter((owner: any) => {
         
         return owner.paymail === user?.paymail
       })
-
-      console.log('OWNER', owner)
-      console.log('USER', user)
 
       if (user && owner?.amount) {
 
@@ -143,13 +138,13 @@ const AuthProvider = ({ children }: Props) => {
 
             if (routeOnLogin) {
 
-              localStorage.setItem('powco.auth.routeOnLogin', '/top')
+              //localStorage.setItem('powco.auth.routeOnLogin', '/top')
 
               router.replace(routeOnLogin)
 
             } else {
 
-              router.replace('/top')
+              //router.replace('/top')
 
             }
             

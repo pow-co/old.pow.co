@@ -28,7 +28,7 @@ const Home = () => {
       const homeRoute = getHomeRoute(auth.user.role)
 
       // Redirect user to Home URL
-      router.replace(homeRoute)
+      //router.replace(homeRoute)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

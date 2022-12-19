@@ -228,6 +228,7 @@ function Rankings({startDate, endDate}: Dates) {
           content={job.content_txid}
           currency={'USD'}
           value={0.05}
+          tag={'pow.co'}
           onSuccess={onBoostSuccess}
           onError={onBoostError}
           onClick={onBoostClick}

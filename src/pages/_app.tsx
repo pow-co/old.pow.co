@@ -89,7 +89,7 @@ if (themeConfig.routingLoader) {
 
 const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
   if (guestGuard) {
-    return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
+    return <>{children}</>//<GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
   } else if (!guestGuard && !authGuard) {
     return <>{children}</>
   } else {
@@ -119,17 +119,15 @@ const App = (props: ExtendedAppProps) => {
 
   const setConfig = Component.setConfig ?? undefined
 
-  const authGuard = Component.authGuard ?? true
+  const authGuard = false//Component.authGuard ?? true
 
-  const guestGuard = Component.guestGuard ?? false
+  const guestGuard = false //Component.guestGuard ?? false
 
   //const aclAbilities = Component.acl ?? defaultACLObj
 
   const dateSpan = useDateRange()
 
   const { isConnected } = usePowcoWebsocket()
-
-  console.debug('powco websocket connected: ', isConnected)
 
   return (
     
