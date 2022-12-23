@@ -111,7 +111,7 @@ export default function TagsList() {
     }
 
     return <>
-            <h1>Top Tags</h1>
+            <h1>Tags</h1>
             <TableContainer>
               <Table>
                 <TableHead>

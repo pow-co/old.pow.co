@@ -30,6 +30,7 @@ import { useAuth } from 'src/hooks/useAuth'
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
 import Link from 'next/link'
+import auth from 'src/configs/auth'
 
 interface Props {
   settings: Settings
@@ -71,6 +72,8 @@ const UserDropdown = (props: Props) => {
     setAnchorEl(null)
   }
 
+  const { login } = useAuth()
+
   const styles = {
     py: 2,
     px: 4,
@@ -91,7 +94,8 @@ const UserDropdown = (props: Props) => {
   }
 
   const handleLogin = () => {
-    router.push('/login')
+    login()
+    //router.push('/login')
     handleDropdownClose()
   }
 
@@ -187,7 +191,7 @@ const UserDropdown = (props: Props) => {
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
             <Box sx={styles}>
               <AccountOutline sx={{ mr: 2 }} />
-              <Link href={'/daily-standup/'}>POWCO Daily Meeting</Link>
+              <Link href={'/meet'}>POWCO Daily Meeting</Link>
             </Box>
           </MenuItem>
 

@@ -1,5 +1,4 @@
 
-
 //import { JitsiMeeting } from '@jitsi/react-sdk';
 import { Card, CardContent, CardHeader, Grid } from '@mui/material';
 import Script from 'next/script';
@@ -18,6 +17,8 @@ import axios from 'axios'
 
 import { useTokenMeetLiveWebsocket } from 'src/hooks/useWebsocket';
 import { Socket } from 'socket.io-client/build/esm/socket';
+
+
 
 const MINIMUM_POWCO_BALANCE = 1
 
@@ -78,6 +79,8 @@ const events = [
 
 function DailyStandup() {
 
+    const { login } = useAuth()
+
     const { user, powcoBalance } = useAuth()
 
     const [jitsiInitialized, setJitsiInitialized] = useState<boolean>()
@@ -88,7 +91,7 @@ function DailyStandup() {
 
     const [jitsiJWT, setJitsiJWT] = useState<string>()
 
-    const roomName = 'vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/SampleAppWorthyTruthsClarifyClearly'
+    const roomName = 'vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/powco-club-room'
 
     async function handleJitsiEvent(type: string, event: any, socket: Socket) {
 
@@ -104,6 +107,10 @@ function DailyStandup() {
             timestamp: new Date().toISOString(),
             roomName
         })
+    }
+
+    function handleLogin() {
+        login()
     }
 
     useEffect(() => {
@@ -234,7 +241,7 @@ function DailyStandup() {
                 <Card>
                 <CardHeader title={`Daily Discussion of Boostpow Costly Signals`}></CardHeader>
                 <CardContent>
-                    <p>nJitsis {nJitsis}</p>
+                <p>nJitsis {nJitsis}</p>
 
                     {user ? (
                         <>
@@ -262,10 +269,10 @@ function DailyStandup() {
   
                     ) : ( 
                         <div>
-                            <p>Please login to join the daily meeting.</p>
+                            <p>Please login to join this room.</p>
 
-                            <Link passHref href='/login'>
-                                <Button component='a' variant='contained' sx={{ px: 5.5 }}>
+                            <Link passHref href='' onClick={handleLogin}>
+                                <Button  onClick={handleLogin} component='a' variant='contained' sx={{ px: 5.5 }}>
                                     Login
                                 </Button>
                             </Link> 

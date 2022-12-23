@@ -2,6 +2,7 @@
 
 //import { JitsiMeeting } from '@jitsi/react-sdk';
 import { Card, CardContent, CardHeader, Grid } from '@mui/material';
+
 import Script from 'next/script';
 
 import { ReactNode, useEffect, useState } from 'react'
@@ -10,6 +11,7 @@ import { ReactNode, useEffect, useState } from 'react'
 import UserLayout from 'src/layouts/UserLayout';
 
 import { useAuth } from 'src/hooks/useAuth'
+
 import Link from 'next/link';
 
 import Button from '@mui/material/Button'
@@ -17,7 +19,9 @@ import Button from '@mui/material/Button'
 import axios from 'axios'
 
 import { useTokenMeetLiveWebsocket } from 'src/hooks/useWebsocket';
+
 import { Socket } from 'socket.io-client/build/esm/socket';
+import { useRouter } from 'next/router';
 
 const MINIMUM_POWCO_BALANCE = 1
 
@@ -88,7 +92,13 @@ function DailyStandup() {
 
     const [jitsiJWT, setJitsiJWT] = useState<string>()
 
-    const roomName = 'vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/SampleAppWorthyTruthsClarifyClearly'
+    const { query } = useRouter()
+
+    const defaultRoom = `SampleAppWorthyTruthsClarifyClearly`
+
+    const room = query.room || defaultRoom
+
+    const roomName = `vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/${room}`
 
     async function handleJitsiEvent(type: string, event: any, socket: Socket) {
 
@@ -171,7 +181,6 @@ function DailyStandup() {
 
                 })
 
-
                 socket.on('jitsi.callFunction', async (message) => {
 
                     const { method, params, uid } = message
@@ -232,9 +241,8 @@ function DailyStandup() {
 
             <Grid key={1234} item xs={12}>
                 <Card>
-                <CardHeader title={`Daily Discussion of Boostpow Costly Signals`}></CardHeader>
+                <CardHeader title={`Meet ${room}`}></CardHeader>
                 <CardContent>
-                    <p>nJitsis {nJitsis}</p>
 
                     {user ? (
                         <>
