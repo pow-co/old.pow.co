@@ -195,6 +195,13 @@ const UserDropdown = (props: Props) => {
             </Box>
           </MenuItem>
 
+          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+            <Box sx={styles}>
+              <AccountOutline sx={{ mr: 2 }} />
+              <Link href={'/arcade/flutter'}>Arcade</Link>
+            </Box>
+          </MenuItem>
+
         </>}
 
 

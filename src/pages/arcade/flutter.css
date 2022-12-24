@@ -1,0 +1,60 @@
+.gpio_values {
+    margin-top: 1rem;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+
+.gpio_values > * {
+    font-weight: bold;
+    font-size: 24px;
+    width: 50px;
+}
+
+.gpio_values > *.new {
+    color: #3f893b; /* pico-8 red */
+}
+
+canvas#canvas { width: 600px; height: 600px; }
+
+.pico8_el {
+    float:left;
+    width:92px;
+    display:inline-block; 
+    margin: 1px;
+    padding: 4px;
+    text-align: center;
+    color:#fff;
+    background-color:#777;
+    font-family : verdana;
+    font-size: 9pt;
+    cursor: pointer;
+    cursor: hand;
+    border: 25px;
+    border-radius: 10px;
+    border-color: #000;
+}
+.pico8_el a{
+    text-decoration: none;
+    color:#fff;
+}
+
+.pico8_el:hover{
+    background-color:#aaa;
+}
+
+.pico8_el:link{
+    background-color:#aaa;
+}
+
+canvas{
+    image-rendering: optimizeSpeed;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    image-rendering: pixelated;
+    -ms-interpolation-mode: nearest-neighbor;
+    border: 10px;
+    border-radius: 10px;
+}
