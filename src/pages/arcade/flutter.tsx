@@ -62,21 +62,18 @@ export default function ArcadeGame() {
 
     useEffect(() => {
 
-        console.log('In Effect', window.Module?.canvas)
-
+        //@ts-ignore
         if (window.Module && window.Module.canvas && !canvas) {
 
+            //@ts-ignore
             setCanvas(window.Module.canvas)
         }
 
-        console.log("window.Module", window.Module)
-
         let _canvas: any = document.getElementById("canvas");
-
-        console.log('canvas', _canvas)
 
         setCanvas(_canvas)
 
+        //@ts-ignore
         if (!canvas || !window.Module) {
             return
         }
@@ -86,12 +83,15 @@ export default function ArcadeGame() {
         // show Emscripten environment where the canvas is
         // arguments are passed to PICO-8
 
+        //@ts-ignore
         window.Module.canvas = canvas;
 
 
-
+    //@ts-ignore
     }, [window.Module, window.Module?.canvas])
 
+
+    //@ts-ignore
     if (!window.Module) {
         return <></>
     }
@@ -152,6 +152,28 @@ export default function ArcadeGame() {
     //@ts-ignore        
     }, [window.getP8Gpio])
 
+    function handleReset() {
+        //@ts-ignore
+        window.Module.pico8Reset()
+    }
+
+    function handlePause() {
+        //@ts-ignore
+        window.Module.pico8TogglePaused()
+    }
+
+    function requestFullScreen() {
+        
+        //@ts-ignore
+        window.Module.requestFullScreen()
+    }
+
+    function onClickSound() {
+
+        //@ts-ignore
+        window.Module.pico8ToggleSound() 
+    }
+
     return <>
         <Script src={'http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js'} />        
         <Script src={'/arcade/scripts/flutter.js'} />
@@ -160,7 +182,7 @@ export default function ArcadeGame() {
 
         <h1>World Builder Arcade Presents: Flutter!!</h1>
 
-        <div className="pico8_el" onClick={() => window.Module.pico8Reset()}>
+        <div className="pico8_el" onClick={handleReset}>
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
             alt="Reset"
@@ -171,7 +193,7 @@ export default function ArcadeGame() {
           Reset
         </div>
 
-        <div className="pico8_el" onClick={() => window.Module.pico8TogglePaused()}>
+        <div className="pico8_el" onClick={handlePause}>
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
             alt="Pause"
@@ -181,7 +203,7 @@ export default function ArcadeGame() {
 
           Pause
         </div>
-        <div className="pico8_el" onClick={() => window.Module.requestFullScreen(true, false)}>
+        <div className="pico8_el" onClick={requestFullScreen}>
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
             alt="Fullscreen"
@@ -191,7 +213,7 @@ export default function ArcadeGame() {
 
           Fullscreen
         </div>
-        <div className="pico8_el" onClick={() => window.Module.pico8ToggleSound() }>
+        <div className="pico8_el" onClick={onClickSound}>
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
             alt="Toggle Sound"
