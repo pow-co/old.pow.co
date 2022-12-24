@@ -54,7 +54,9 @@ export default function ArcadeGame() {
 
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
 
+    // @ts-ignore
     if (!window.Module) {
+        // @ts-ignore
         window.Module = {}
     }
 
