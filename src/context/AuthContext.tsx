@@ -86,7 +86,7 @@ const AuthProvider = ({ children }: Props) => {
 
     (async () => {
 
-      const { data } = await axios.get('https://staging-backend.relayx.com/api/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
+      const { data } = await axios.get('https://stagwallet.io/api/v1/token/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2/owners')
 
       const [owner] = data.data.owners.filter((owner: any) => {
         
