@@ -241,7 +241,6 @@ function DailyStandup() {
                 <Card>
                 <CardHeader title={`Daily Discussion of Boostpow Costly Signals`}></CardHeader>
                 <CardContent>
-                <p>nJitsis {nJitsis}</p>
 
                     {user ? (
                         <>

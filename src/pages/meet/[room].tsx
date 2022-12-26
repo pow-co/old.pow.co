@@ -23,7 +23,7 @@ import { useTokenMeetLiveWebsocket } from 'src/hooks/useWebsocket';
 import { Socket } from 'socket.io-client/build/esm/socket';
 import { useRouter } from 'next/router';
 
-const MINIMUM_POWCO_BALANCE = 1
+const MINIMUM_POWCO_BALANCE = 100
 
 const events = [
     'cameraError',
@@ -118,7 +118,9 @@ function DailyStandup() {
 
     useEffect(() => {
 
+
         if (user && powcoBalance && powcoBalance >= MINIMUM_POWCO_BALANCE) {
+
 
             // @ts-ignore
             if (!window.JitsiMeetExternalAPI) {
@@ -142,7 +144,8 @@ function DailyStandup() {
             axios.post('https://tokenmeet.live/api/v1/jaas/auth', {
                 wallet: 'relay',
                 paymail: user.paymail,
-                token
+                token,
+                roomName
             })
             .then(({data}) => {
 
