@@ -2902,7 +2902,6 @@
     "protobufjs" "^6.10.0"
     "yargs" "^16.2.0"
 
-<<<<<<< HEAD
 "@handcash/handcash-connect@^1.0.0-rc.4":
   "integrity" "sha512-qYTL+1swLG+hMXe9WOI/zCX0EoEuzsaJvKlHaUetbouL9+RbjlcCgQDgrLM4itw44OjuQWnCdvs3DW9Qjz0jTQ=="
   "resolved" "https://registry.npmjs.org/@handcash/handcash-connect/-/handcash-connect-1.0.0-rc.4.tgz"
@@ -2913,7 +2912,7 @@
     "dotenv" "16.0.3"
     "esbuild" "^0.15.14"
     "run-sdk" "0.6.41"
-=======
+
 "@hastearcade/models@^1.4.0":
   "integrity" "sha512-nTkf/plYHMvlbuU+sgRP1YNJSYHrEVSD1Wn4TRhtTvPC7/KZ51C/h/xNkCMLATGN9idOcCcteTNJq/5pTg4cHg=="
   "resolved" "https://registry.npmjs.org/@hastearcade/models/-/models-1.4.1.tgz"
@@ -2932,7 +2931,6 @@
     "jwks-rsa" "^2.0.4"
     "jwt-decode" "^3.1.2"
     "uuid" "^8.3.2"
->>>>>>> Sign in With Haste in Arcade
 
 "@hookform/resolvers@2.4.0":
   "integrity" "sha512-KiHc7Uwd2IJMvPTMQ9vQxfss2ulq2gRYL/HYZ90qiTs+07UgGWCikiIvE2pKjjGVltEYjq5eR8x0ITmoyEjGxQ=="
