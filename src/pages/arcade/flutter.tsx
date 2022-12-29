@@ -63,6 +63,7 @@ export default function ArcadeGame() {
 
     const {socket, isConnected} = useArcadeWebsocket()
 
+    // @ts-ignore
     if (!window.Module) {
         // @ts-ignore
         window.Module = {}
