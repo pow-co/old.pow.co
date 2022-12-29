@@ -96,8 +96,7 @@ export default function ArcadeGame() {
           return
         }
 
-        console.log('In Effect', window.Module?.canvas)
-
+        // @ts-ignore
         if (window.Module && window.Module.canvas && !canvas) {
 
             //@ts-ignore
