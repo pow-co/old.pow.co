@@ -1,16 +1,27 @@
 
 import { Script } from '@runonbitcoin/nimble'
+import axios from 'axios';
 import bops from 'bops'
+import { RelationOnlyOneToMany } from 'mdi-material-ui';
 
 interface SendMessage {
     app: string;
     channel: string;
     message: string;
+    paymail?: string;
+    address?: string;
 }
 
-export async function sendMessage({ app, channel, message }: SendMessage): Promise<void> {
+interface SignResult {
+  algorithm: "bitcoin-signed-message";
+  key: "identity";
+  data: string; // data you passed in
+  value: string; // signature
+}
 
-  console.log("sendMessage", { app, channel, message })
+export async function sendMessage({ app, channel, message, paymail, address }: SendMessage): Promise<void> {
+
+  console.log("sendMessage", { app, channel, message, paymail, address })
 
       // Create data payload for Message Schema
       let dataPayload: string[] = [
@@ -25,41 +36,27 @@ export async function sendMessage({ app, channel, message }: SendMessage): Promi
         app,
         "type",
         "message",
-        "author",
-        "#{address}",
         "paymail",
-        "#{paymail}",
+        paymail || '',
         "context",
         "channel",
         "channel",
         channel,
-        "|"
+       //"|"
       ];
 
-      const cryptoOperations = [{
-        name: 'address',
-        method: 'address',
-        key: 'identity'
-      }, {
-        name: 'paymail',
-        method: 'paymail',
-        key: 'identity'
-      }, {
-        name: 'signature',
-        method: 'sign',
-        data: dataPayload.join(''),
-        dataEncoding: 'utf8',
-        key: 'identity',
-        algorithm: 'bitcoin-signed-message'
-      }]
+      //@ts-ignore
+      /*const {signature} = await window.relayone.sign(dataPayload
+        .map((str) => bops.to(bops.from(str, "utf8"), "hex"))
+        .join(" "))
 
       dataPayload = [
         ...dataPayload,
         '15PciHG22SNLQJXMoSUaWVi7WSqc7hCfva', // AUTHOR IDENTITY PROTOCOL PREFIX
         'BITCOIN_ECDSA',
-        "#{address}",
-        "#{signature}"
-      ]
+        address || '',
+        signature
+      ]*/
 
       // Channels get used in chat apps like: https://bitchatnitro.com/
       const script = Script.fromASM(
@@ -76,8 +73,31 @@ export async function sendMessage({ app, channel, message }: SendMessage): Promi
       //@ts-ignore
       let resp = await window.relayone.send({
         outputs,
-        cryptoOperations
       });
+
+      ;(async () => {
+        // TODO: Handle POST message to onchain.sv BMAP indexing API service
+        // POST https://onchain.sv/api/v1/transactions
+        // {
+        //   "transaction": resp.txhex
+        // }
+        try {
+
+          const { data } = await axios.post('https://onchain.sv/api/v1/transactions', {
+            transaction: resp.txhex
+          })
+
+          console.log('onchain.sv.transactions.post.result', data)
+
+          const { data: getData } = await axios.get(`https://onchain.sv/api/v1/transactions/${resp.txid}`)
+
+          console.log('onchain.sv.transactions.get.result', getData)
+
+        } catch(error) {
+          console.error('onchain.sv.transactions.post.error', error)
+
+        }
+      })();
 
       let txid = resp.txid;
 

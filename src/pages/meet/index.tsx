@@ -116,9 +116,10 @@ function DailyStandup() {
             try {
 
                 const result = await sendMessage({
-                    app: 'pow.co',
+                    app: 'bitchatnitro.com',
                     channel: 'powco-development',
-                    message: `[${user?.paymail}]: ${event.message}`
+                    message: `[${user?.paymail}]: ${event.message}`,
+                    paymail: user?.paymail
                 })
 
                 console.log('bsocial.sendMessage.result', result)
