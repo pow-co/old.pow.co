@@ -208,6 +208,12 @@ export default function ArcadeGame() {
         window.Module.pico8ToggleSound() 
     }
 
+    function picoReset() {
+
+      //@ts-ignore
+      window.Module.pico8Reset()
+    }
+
     return <>
         <Script src={'http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js'} />        
         <Script src={'/arcade/scripts/flutter.js'} />
@@ -229,7 +235,8 @@ export default function ArcadeGame() {
           <img onClick={() => hasteClient?.login() } src='https://docs.hastearcade.com/img/login.svg'/>
         </>}
 
-        <div className="pico8_el" onClick={() => window.Module.pico8Reset()}>
+          
+        <div className="pico8_el" onClick={picoReset}>
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
             alt="Reset"
