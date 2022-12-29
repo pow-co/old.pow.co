@@ -4,6 +4,8 @@ import Script from 'next/script'
 import { useEffect, useState } from 'react'
 
 import { EventEmitter } from 'events'
+
+import { HasteClient } from '@hastearcade/web'
         
 class Game extends EventEmitter {
     score: number;
@@ -48,17 +50,48 @@ class Game extends EventEmitter {
 
   }
 
-
+import { useArcadeWebsocket } from 'src/hooks/useArcadeWebsocket';
 
 export default function ArcadeGame() {
 
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
 
+    const [hasteAuth, setHasteAuth] = useState<any>()
+
+    const [hasteClient, setHasteClient] = useState<HasteClient>()
+
+    const {socket, isConnected} = useArcadeWebsocket()
+
     if (!window.Module) {
         window.Module = {}
     }
 
+    if (!hasteClient) {
+      setHasteClient(HasteClient.build());
+    }
+
+    function logout() {
+      setHasteAuth(null)
+      if (hasteClient) {
+
+        hasteClient.logout()
+      }
+    }
+
     useEffect(() => {
+
+        if (!hasteClient) { return }
+
+        const details = hasteClient.getTokenDetails();
+
+        console.log('haste.auth.details', details)
+
+        setHasteAuth(details)
+
+        if (!details || !details.isAuthenticated) {
+          //hasteClient.login();
+          return
+        }
 
         console.log('In Effect', window.Module?.canvas)
 
@@ -148,7 +181,7 @@ export default function ArcadeGame() {
         game.subscribe()
 
     //@ts-ignore        
-    }, [window.getP8Gpio])
+    }, [window?.getP8Gpio])
 
     return <>
         <Script src={'http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js'} />        
@@ -157,6 +190,19 @@ export default function ArcadeGame() {
         <Script src={'/arcade/scripts/pico8-gpio-listener.js'} />
 
         <h1>World Builder Arcade Presents: Flutter!!</h1>
+
+        <small>
+          {isConnected ? 'Socket Connected' : 'Socket Not Connected'}
+        </small>
+
+        {hasteAuth && hasteAuth.isAuthenticated && hasteClient ? <>
+          <h2>Logged in as {hasteAuth.displayName} on Handcash</h2>
+          <p>
+            <a onClick={() => hasteClient.logout()}>Logout</a>
+          </p>
+        </> : <>
+          <img onClick={() => hasteClient?.login() } src='https://docs.hastearcade.com/img/login.svg'/>
+        </>}
 
         <div className="pico8_el" onClick={() => window.Module.pico8Reset()}>
           <img
@@ -207,6 +253,8 @@ export default function ArcadeGame() {
                 onContextMenu={(event) => event.preventDefault()}
             ></canvas>
         </div>
+
+        <img src='https://docs.hastearcade.com/img/dark-badge.svg'/>
 
     </>
 
