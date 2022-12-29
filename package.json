@@ -31,6 +31,7 @@
     "@fullcalendar/react": "5.10.1",
     "@fullcalendar/timegrid": "5.10.1",
     "@handcash/handcash-connect": "^1.0.0-rc.4",
+    "@hastearcade/web": "^4.0.1",
     "@hookform/resolvers": "2.4.0",
     "@jitsi/react-sdk": "^1.3.0",
     "@mui/lab": "^5.0.0-alpha.80",
