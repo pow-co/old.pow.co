@@ -76,6 +76,7 @@ const events = [
     'peerConnectionFailure'
 ]
 
+import { sendMessage } from 'src/utils/bsocial/message'
 
 function DailyStandup() {
 
@@ -107,6 +108,28 @@ function DailyStandup() {
             timestamp: new Date().toISOString(),
             roomName
         })
+
+        if (type === "outgoingMessage") {
+
+            console.log('OUTGOING MESSAGE', event)
+
+            try {
+
+                const result = await sendMessage({
+                    app: 'pow.co',
+                    channel: 'powco-development',
+                    message: `[${user?.paymail}]: ${event.message}`
+                })
+
+                console.log('bsocial.sendMessage.result', result)
+
+            } catch(error) {
+
+                console.error('bsocial.sendMessage.error', error)
+            }
+
+
+        }
     }
 
     function handleLogin() {

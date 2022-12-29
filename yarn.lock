@@ -4693,6 +4693,11 @@
   "resolved" "https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz"
   "version" "1.5.1"
 
+"base64-js@1.0.2":
+  "integrity" "sha512-ZXBDPMt/v/8fsIqn+Z5VwrhdR6jVka0bYobHdGia0Nxi7BJ9i/Uvml3AocHIBtIIBhZjBw5MR0aR4ROs/8+SNg=="
+  "resolved" "https://registry.npmjs.org/base64-js/-/base64-js-1.0.2.tgz"
+  "version" "1.0.2"
+
 "bcp-47-match@^2.0.0":
   "integrity" "sha512-JtTezzbAibu8G0R9op9zb3vcWZd9JF6M0xOYGPn0fNCd7wOpRB1mU2mH9T8gaBGbAAyIIVgB2G7xG0GP98zMAQ=="
   "resolved" "https://registry.npmjs.org/bcp-47-match/-/bcp-47-match-2.0.3.tgz"
@@ -4767,6 +4772,14 @@
     "randombytes" "^2.1.0"
     "stream-browserify" "^3.0.0"
     "vm-browserify" "^1.1.2"
+
+"bops@^1.0.1":
+  "integrity" "sha512-qCMBuZKP36tELrrgXpAfM+gHzqa0nLsWZ+L37ncsb8txYlnAoxOPpVp+g7fK0sGkMXfA0wl8uQkESqw3v4HNag=="
+  "resolved" "https://registry.npmjs.org/bops/-/bops-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "base64-js" "1.0.2"
+    "to-utf8" "0.0.1"
 
 "bowser@^2.11.0":
   "integrity" "sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA=="
@@ -10194,6 +10207,11 @@
   "version" "5.0.1"
   dependencies:
     "is-number" "^7.0.0"
+
+"to-utf8@0.0.1":
+  "integrity" "sha512-zks18/TWT1iHO3v0vFp5qLKOG27m67ycq/Y7a7cTiRuUNlc4gf3HGnkRgMv0NyhnfTamtkYBJl+YeD1/j07gBQ=="
+  "resolved" "https://registry.npmjs.org/to-utf8/-/to-utf8-0.0.1.tgz"
+  "version" "0.0.1"
 
 "toposort@^2.0.2":
   "integrity" "sha1-riF2gXXRVZ1IvvNUILL0li8JwzA="

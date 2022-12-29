@@ -61,7 +61,6 @@ export default function Twetch({ txid }: { txid: string }) {
         (async () => {
           
           if (txid) {
-            console.log("TWETCH", {txid})
 
             const result = await postDetailQuery(txid)
 
