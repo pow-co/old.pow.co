@@ -97,7 +97,7 @@ export function ContentCard({job}: {job: any}) {
 
   return <Card>
     <CardHeader sx={{}}
-      title={<div><span>{job.difficulty.toFixed(3)} ⛏️</span> <small><Link target="_blank" rel="noreferrer"  href={`https://whatsonchain.com/${job.content_txid}`}>
+      title={<div><span>{job.difficulty?.toFixed(3)} ⛏️</span> <small><Link target="_blank" rel="noreferrer"  href={`https://whatsonchain.com/${job.content_txid}`}>
       <WhiteLink>{job.content_txid}</WhiteLink>
       </Link></small></div>}
     ></CardHeader>
