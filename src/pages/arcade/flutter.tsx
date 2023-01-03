@@ -7,13 +7,6 @@ import { EventEmitter } from 'events'
 
 import { HasteClient } from '@hastearcade/web'
 
-const customFetcher = async (url: string) => {
-  const response = await fetch(url);
-  const json = await response.json();
-  return json.metadata;
-};  
-
-        
 class Game extends EventEmitter {
     score: number;
     gamestate: number;
@@ -58,9 +51,7 @@ class Game extends EventEmitter {
   }
 
 import { useArcadeWebsocket } from 'src/hooks/useArcadeWebsocket';
-import useSWR from 'swr';
 import axios from 'axios';
-import { AxisXRotateCounterclockwise } from 'mdi-material-ui';
 
 
 export default function ArcadeGame() {
