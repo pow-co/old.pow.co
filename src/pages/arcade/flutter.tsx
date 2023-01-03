@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { EventEmitter } from 'events'
 
 import { HasteClient } from '@hastearcade/web'
-        
+
 class Game extends EventEmitter {
     score: number;
     gamestate: number;
@@ -51,6 +51,8 @@ class Game extends EventEmitter {
   }
 
 import { useArcadeWebsocket } from 'src/hooks/useArcadeWebsocket';
+import axios from 'axios';
+
 
 export default function ArcadeGame() {
 
@@ -62,6 +64,41 @@ export default function ArcadeGame() {
     const [hasteClient, setHasteClient] = useState<HasteClient>()
 
     const {socket, isConnected} = useArcadeWebsocket()
+
+    const [play, setPlay] = useState()
+
+    const [handcashToken, sethandcashToken] = useState()
+
+    const [leaderboards, setLeaderboards] = useState([])
+
+    async function selectLeaderboard(leaderboard:any) {
+      console.log('select leaderboard', leaderboard)
+      const { data } = await axios.post(`https://fluttergame.fun/api/v1/haste/plays`, {
+        leaderboard_id: leaderboard.id,
+        handcash_token: hasteAuth.token
+      })
+
+      setPlay(data.play)
+    }
+
+    async function postScore(score: any) {
+      const { data } = await axios.post(`https://fluttergame.fun/api/v1/haste/scores`, {
+        handcash_token: hasteAuth.token,
+        score,
+        play
+      })
+
+      setPlay(data.play)
+    }
+    
+    useEffect(() => {
+
+      axios.get(`https://fluttergame.fun/api/v1/haste/leaderboards`).then(({data}) => {
+        console.log('leaderboards', data)
+        setLeaderboards(data.leaderboards)
+      })
+
+    }, [hasteAuth])
 
     // @ts-ignore
     if (!window.Module) {
@@ -82,6 +119,8 @@ export default function ArcadeGame() {
     }
 
     useEffect(() => {
+
+        if (!play) { return }
 
         if (!hasteClient) { return }
 
@@ -118,11 +157,12 @@ export default function ArcadeGame() {
         // arguments are passed to PICO-8
 
         //@ts-ignore
+        console.log('play?', play)
         window.Module.canvas = canvas;
 
 
     //@ts-ignore
-    }, [window.Module, window.Module?.canvas])
+    }, [window.Module, window.Module?.canvas, play])
 
 
     //@ts-ignore
@@ -151,6 +191,8 @@ export default function ArcadeGame() {
 
     useEffect(() => {
 
+      if (!play){ return}
+
         //@ts-ignore
         if (!window.getP8Gpio) {
             return
@@ -163,20 +205,24 @@ export default function ArcadeGame() {
 
             gpio,
             
-            onNewScore(score: number) {
-            console.log('New score', { score });
+              onNewScore(score: number) {
+              console.log('New score', { score });
             },
 
             onStart() {
-            console.log('Game started');
-            // Post to the API and create a Play in Haste and record it in the database
+              console.log('Game started');
+             // Post to the API and create a Play in Haste and record it in the database
             },
 
             onEnd({ score }: {score: number}) {
-            console.log('Game ended', { score });
+              console.log('Game ended', { score });
 
-            // Post to API and create Score in Haste and record it in the database
-            // Update the Play in the database now that it is complete
+              postScore(score).then(result => {
+                console.log('score posted', result)
+              })
+
+              // Post to API and create Score in Haste and record it in the database
+              // Update the Play in the database now that it is complete
             }
 
         })
@@ -184,7 +230,7 @@ export default function ArcadeGame() {
         game.subscribe()
 
     //@ts-ignore        
-    }, [window?.getP8Gpio])
+    }, [play])
 
     function handleReset() {
         //@ts-ignore
@@ -222,10 +268,6 @@ export default function ArcadeGame() {
 
         <h1>World Builder Arcade Presents: Flutter!!</h1>
 
-        <small>
-          {isConnected ? 'Socket Connected' : 'Socket Not Connected'}
-        </small>
-
         {hasteAuth && hasteAuth.isAuthenticated && hasteClient ? <>
           <h2>Logged in as {hasteAuth.displayName} on Handcash</h2>
           <p>
@@ -234,6 +276,15 @@ export default function ArcadeGame() {
         </> : <>
           <img onClick={() => hasteClient?.login() } src='https://docs.hastearcade.com/img/login.svg'/>
         </>}
+
+
+        {leaderboards && (
+          <div className="leaderboard-list">
+            {leaderboards.map((leaderboard: any) => {
+              return <p><a onClick={() => { selectLeaderboard(leaderboard)}}>{leaderboard.formattedCostString}</a></p>
+            })}
+          </div>
+        )}
 
           
         <div className="pico8_el" onClick={picoReset}>
@@ -278,13 +329,14 @@ export default function ArcadeGame() {
           Sound
         </div>
 
-        <div id="game">
-            <canvas
-                className="emscripten"
-                id="canvas"
-                onContextMenu={(event) => event.preventDefault()}
-            ></canvas>
-        </div>
+              <div id="game">
+                  <canvas
+                      className="emscripten"
+                      id="canvas"
+                      onContextMenu={(event) => event.preventDefault()}
+                  ></canvas>
+              </div>
+
 
         <img src='https://docs.hastearcade.com/img/dark-badge.svg'/>
 
