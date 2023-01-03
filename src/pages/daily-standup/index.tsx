@@ -94,8 +94,6 @@ function DailyStandup() {
 
         //TODO: Pipe the event to websocket server
 
-        console.log('JIITSI EVENT', {type, event, user})
-
         socket.emit('jitsi-event', {
             type,
             event,
@@ -107,6 +105,8 @@ function DailyStandup() {
     }
 
     useEffect(() => {
+
+        console.log('USE EFFECT')
 
         if (user && powcoBalance && powcoBalance >= MINIMUM_POWCO_BALANCE) {
 
@@ -223,7 +223,9 @@ function DailyStandup() {
         }
 
     // @ts-ignore
-    }, [window.JitsiMeetExternalAPI], nJitsis)
+    }, [window.JitsiMeetExternalAPI], nJitsis, powcoBalance)
+
+    console.log('--meet about to return--')
 
     return (
 

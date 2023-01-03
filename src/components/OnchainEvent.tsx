@@ -8,6 +8,7 @@ import { LinkPreview } from '@dhaiwat10/react-link-preview';
 import Gist from "react-gist";
 
 import { fetcher } from '../@core/hooks/useAPI'
+import PowcoDevIssue from './feed/PowcoDevIssue';
 
 const customFetcher = async (url: string) => {
     const response = await fetch(`https://link-preview-proxy.pow.co/v2?url=${url}`);
@@ -76,16 +77,9 @@ export default function OnchainEvent({ txid }: {txid: string}) {
     }
   
     if (event.app === 'powco.dev' && event.type === 'github.issue') {
-  
-      return <>
-  
-        <LinkPreview url={event.content.html_url} fetcher={customFetcher} fallback={<div>  
-          <small><a href='{event.content.html_url}' className='blankLink'>{event.content.html_url}</a></small>
-          <h3>{event.content.title}</h3>
-          <h4>{event.content.body}</h4>
-        </div>} />
-  
-      </>
+
+      return <PowcoDevIssue event={event} />
+
   
     }
   

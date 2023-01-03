@@ -54,7 +54,9 @@ const WhiteLink = styled.a`
   font-size: 70%;
 `
 
-function OnchainEvent({ txid }: {txid: string}) {
+import OnchainEvent from 'src/components/OnchainEvent'
+
+/*function OnchainEvent({ txid }: {txid: string}) {
 
   // @ts-ignore
   const { data } = useSWR(`https://onchain.sv/api/v1/events/${txid}`, fetcher)
@@ -117,7 +119,7 @@ function OnchainEvent({ txid }: {txid: string}) {
     </>
   )
 
-}
+}*/
 
 function YoutubeMetadataOnchain({event}: {txid: string, event: any}) {
 

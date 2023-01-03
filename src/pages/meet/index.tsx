@@ -139,6 +139,8 @@ function DailyStandup() {
 
     useEffect(() => {
 
+        console.log('USE EFFECT', {nJitsis})
+
         if (user && powcoBalance && powcoBalance >= MINIMUM_POWCO_BALANCE) {
 
             // @ts-ignore
@@ -253,8 +255,10 @@ function DailyStandup() {
             })
         }
 
+        console.log('--end use effect--', {nJitsis})
+
     // @ts-ignore
-    }, [window.JitsiMeetExternalAPI], nJitsis)
+    }, [window.JitsiMeetExternalAPI, jitsiJWT, powcoBalance])
 
     return (
 
