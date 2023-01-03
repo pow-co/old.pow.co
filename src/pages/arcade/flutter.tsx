@@ -157,7 +157,6 @@ export default function ArcadeGame() {
         // arguments are passed to PICO-8
 
         //@ts-ignore
-        console.log('play?', play)
         window.Module.canvas = canvas;
 
 
