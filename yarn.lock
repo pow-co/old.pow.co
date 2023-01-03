@@ -3245,9 +3245,9 @@
   dependencies:
     "glob" "7.1.7"
 
-"@next/swc-darwin-x64@12.1.6":
-  "integrity" "sha512-9FptMnbgHJK3dRDzfTpexs9S2hGpzOQxSQbe8omz6Pcl7rnEp9x4uSEKY51ho85JCjL4d0tDLBcXEJZKKLzxNg=="
-  "resolved" "https://registry.npmjs.org/@next/swc-darwin-x64/-/swc-darwin-x64-12.1.6.tgz"
+"@next/swc-win32-x64-msvc@12.1.6":
+  "integrity" "sha512-4ZEwiRuZEicXhXqmhw3+de8Z4EpOLQj/gp+D9fFWo6ii6W1kBkNNvvEx4A90ugppu+74pT1lIJnOuz3A9oQeJA=="
+  "resolved" "https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-12.1.6.tgz"
   "version" "12.1.6"
 
 "@nodelib/fs.scandir@2.1.5":
@@ -4710,6 +4710,15 @@
     "form-data" "^4.0.0"
     "proxy-from-env" "^1.1.0"
 
+"axios@^1.2.2":
+  "integrity" "sha512-bz/J4gS2S3I7mpN/YZfGFTqhXTYzRho8Ay38w2otuuDR322KzFIWm/4W2K6gIwvWaws5n+mnb7D1lN9uD+QH6Q=="
+  "resolved" "https://registry.npmjs.org/axios/-/axios-1.2.2.tgz"
+  "version" "1.2.2"
+  dependencies:
+    "follow-redirects" "^1.15.0"
+    "form-data" "^4.0.0"
+    "proxy-from-env" "^1.1.0"
+
 "axios@0.21.4":
   "integrity" "sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg=="
   "resolved" "https://registry.npmjs.org/axios/-/axios-0.21.4.tgz"
@@ -6010,9 +6019,9 @@
   "resolved" "https://registry.npmjs.org/es6-object-assign/-/es6-object-assign-1.1.0.tgz"
   "version" "1.1.0"
 
-"esbuild-darwin-64@0.15.18":
-  "integrity" "sha512-2WAvs95uPnVJPuYKP0Eqx+Dl/jaYseZEUUT1sjg97TJa4oBtbAKnPnl3b5M9l51/nbx7+QAEtuummJZW0sBEmg=="
-  "resolved" "https://registry.npmjs.org/esbuild-darwin-64/-/esbuild-darwin-64-0.15.18.tgz"
+"esbuild-windows-64@0.15.18":
+  "integrity" "sha512-qinug1iTTaIIrCorAUjR0fcBk24fjzEedFYhhispP8Oc7SFvs+XeW3YpAKiKp8dRpizl4YYAhxMjlftAMJiaUw=="
+  "resolved" "https://registry.npmjs.org/esbuild-windows-64/-/esbuild-windows-64-0.15.18.tgz"
   "version" "0.15.18"
 
 "esbuild@^0.15.14":
@@ -8370,6 +8379,14 @@
   "resolved" "https://registry.npmjs.org/murmurhash-js/-/murmurhash-js-1.0.0.tgz"
   "version" "1.0.0"
 
+"myboostpow-lib@^0.1.6":
+  "integrity" "sha512-TT8ZQ32GKhgwJajMIj+6rBcSeXCRvbbVgkq7DdqYMO+pdaQHMrKWgyfYhC2xN+Ik/7pblrmbYsi5ov6U6B3qqA=="
+  "resolved" "https://registry.npmjs.org/myboostpow-lib/-/myboostpow-lib-0.1.6.tgz"
+  "version" "0.1.6"
+  dependencies:
+    "axios" "^1.2.2"
+    "stag-relayx" "^0.2.8"
+
 "nanoclone@^0.2.1":
   "integrity" "sha512-wynEP02LmIbLpcYw8uBKpcfF6dmg2vcpKqxeH5UcoKEYdExslsdUA4ugFauuaeYdTB76ez6gJW8XAZ6CgkXYxA=="
   "resolved" "https://registry.npmjs.org/nanoclone/-/nanoclone-0.2.1.tgz"
@@ -9953,10 +9970,10 @@
     "pbkdf2-compat" "^4.0.0"
     "webpack" "^5.75.0"
 
-"stag-relayx@^0.2.2":
-  "integrity" "sha512-9CqOq39/9QeXfXDbn+FAb2VCgIGxOF80GE00CMpe+aoHWhb9lk0nbO9n6YGzk1jsAcmXgSPZQZ6ZaByFlU9H/Q=="
-  "resolved" "https://registry.npmjs.org/stag-relayx/-/stag-relayx-0.2.2.tgz"
-  "version" "0.2.2"
+"stag-relayx@^0.2.2", "stag-relayx@^0.2.8":
+  "integrity" "sha512-lTQF8k0F08i/VmqvaiConfogGwy8q2fbwDvpz3fEdoMaJJSEUJjGYGWk/u7Md/mEnGycSxXRHAzk71OxM8cDaA=="
+  "resolved" "https://registry.npmjs.org/stag-relayx/-/stag-relayx-0.2.8.tgz"
+  "version" "0.2.8"
   dependencies:
     "@runonbitcoin/nimble" "^1.0.14"
     "axios" "^1.2.0"

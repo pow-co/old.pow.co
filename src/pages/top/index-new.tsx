@@ -30,6 +30,8 @@ import useBus from 'use-bus'
 //import Twetch from 'src/components/bfiles/Twetch'
 
 import BoostpowButton from 'boostpow-button'
+import { BoostButton } from 'myboostpow-lib'
+import 'myboostpow-lib/dist/tailwind.css'
 
 import { Box } from '@mui/material'
 
@@ -70,7 +72,14 @@ function onBoostClick() {
 
 export function Boost({sx, job}: any) {
   return <Box sx={sx}>
-    <BoostpowButton
+    <BoostButton 
+        content={job.content_txid}
+        value={124_000}
+        tag='pow.co'
+        onSuccess={onBoostSuccess}
+        onError={onBoostError}
+      />
+    {/* <BoostpowButton
         content={job.content_txid}
         currency={'USD'}
         value={0.05}
@@ -78,7 +87,7 @@ export function Boost({sx, job}: any) {
         onSuccess={onBoostSuccess}
         onError={onBoostError}
         onClick={onBoostClick}
-      />
+      /> */}
   </Box>
 }
 

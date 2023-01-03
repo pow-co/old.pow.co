@@ -40,7 +40,7 @@ function DailyStandup() {
                 userInfo: {
                     displayName: `${user?.paymail} ${powcoBalance} POWCO`,
                     email: user?.paymail || '',
-                    avatarUrl: `https://bitpic.network/u/${user?.paymail}`
+                    avatarUrl: `https://a.relayx.com/u/${user?.paymail}`
 
                 },
                 configOverwrite: {

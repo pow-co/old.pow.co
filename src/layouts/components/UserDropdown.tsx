@@ -118,14 +118,14 @@ const UserDropdown = (props: Props) => {
             alt={user.paymail}
             onClick={handleDropdownOpen}
             sx={{ width: 40, height: 40 }}
-            src={`https://bitpic.network/u/${user.paymail}`}
+            src={`https://a.relayx.com/u/${user.paymail}`}
           />
         ) : (
           <Avatar
             alt={paymail}
             onClick={handleDropdownOpen}
             sx={{ width: 40, height: 40 }}
-            src={`https://bitpic.network/u/${paymail}`}
+            src={`https://a.relayx.com/u/${paymail}`}
           />
         )}
 
@@ -158,7 +158,7 @@ const UserDropdown = (props: Props) => {
                 alt={user?.paymail}
                 onClick={handleDropdownOpen}
                 sx={{ width: 40, height: 40 }}
-                src={`https://bitpic.network/u/${user?.paymail}`}
+                src={`https://a.relayx.com/u/${user?.paymail}`}
               />
 
             </Badge>
