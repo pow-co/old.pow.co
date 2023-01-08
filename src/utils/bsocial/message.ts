@@ -42,7 +42,6 @@ export async function sendMessage({ app, channel, message, paymail, address }: S
         "channel",
         "channel",
         channel,
-       //"|"
       ];
 
       //@ts-ignore
@@ -72,7 +71,10 @@ export async function sendMessage({ app, channel, message, paymail, address }: S
 
       //@ts-ignore
       let resp = await window.relayone.send({
-        outputs,
+        to: 'powco@relayx.io',
+        currency: 'USD',
+        amount: 0.0001,
+        opReturn: dataPayload,
       });
 
       ;(async () => {
@@ -82,6 +84,12 @@ export async function sendMessage({ app, channel, message, paymail, address }: S
         //   "transaction": resp.txhex
         // }
         try {
+
+          const bMapResult = await axios.post('https://b.map.sv/ingest', {
+            rawTx: resp.rawTx
+          })
+
+          console.log('b.map.sv.ingest.result', bMapResult)
 
           const { data } = await axios.post('https://onchain.sv/api/v1/transactions', {
             transaction: resp.txhex

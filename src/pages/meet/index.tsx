@@ -115,10 +115,10 @@ function DailyStandup() {
 
             try {
 
-                const result = await sendMessage({
-                    app: 'bitchatnitro.com',
+                const result: any = await sendMessage({
+                    app: 'chat.pow.co',
                     channel: 'powco-development',
-                    message: `[${user?.paymail}]: ${event.message}`,
+                    message: event.message,
                     paymail: user?.paymail
                 })
 
