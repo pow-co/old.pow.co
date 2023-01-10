@@ -20,7 +20,7 @@ import { Socket } from 'socket.io-client/build/esm/socket';
 
 
 
-const MINIMUM_POWCO_BALANCE = 1
+const MINIMUM_POWCO_BALANCE = 100
 
 const events = [
     'cameraError',
