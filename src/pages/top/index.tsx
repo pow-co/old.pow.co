@@ -37,7 +37,7 @@ import BoostpowButton from 'boostpow-button'
 import { BoostButton } from 'myboostpow-lib'
 import 'myboostpow-lib/dist/tailwind.css'
 
-import { Box } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 
 import toast from 'react-hot-toast'
 
@@ -51,9 +51,20 @@ interface Ranking {
   difficulty: number;
 }
 
-const WhiteLink = styled.a`
+export const WhiteLink = styled.a`
   color: white;
   font-size: 70%;
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const BlackLink = styled.a`
+  color: black;
+  font-size: 70%;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 import OnchainEvent from 'src/components/OnchainEvent'
@@ -149,6 +160,8 @@ function Rankings({startDate, endDate}: Dates) {
 
   const { data, error, refresh } = useAPI(`/api/v1/boost/rankings?start_date=${moment(start).unix()}`)
 
+  const theme = useTheme()
+
   useBus(
     'date_range_from_updated',
     ({value}) => {
@@ -226,14 +239,12 @@ function Rankings({startDate, endDate}: Dates) {
             <Grid key={job.content_txid} item xs={12}>
             <Card>
               <CardHeader sx={{}}
-                title={<div><span>{job.difficulty.toFixed(3)} ⛏️</span> <small><Link target="_blank" rel="noreferrer"  href={`https://whatsonchain.com/${job.content_txid}`}>
-                <WhiteLink>{job.content_txid}</WhiteLink>
+                title={<div><span>{job.difficulty.toFixed(3)} ⛏️</span> <small><Link rel="noreferrer"  href={`/${job.content_txid}`}>
+                  {theme.palette.mode === 'dark' ? <WhiteLink>{job.content_txid}</WhiteLink> : <BlackLink>{job.content_txid}</BlackLink>}
                 </Link></small></div>}
               ></CardHeader>
 
               <CardContent>
-
-                
 
                 {job.content_type?.match('image') && (
                   

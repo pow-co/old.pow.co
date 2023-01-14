@@ -10,8 +10,11 @@ import axios from 'axios'
 //import { wrapRelayx } from '/Users/zyler/github/stagwallet/stag-relayx'
 
 import toast from 'react-hot-toast'
+import { useRouter } from 'next/router'
 
 export default function SearchBar() {
+
+    const router = useRouter()
 
     const [formInput, setFormInput] = useState()
     const [submitting, setSubmitting] = useState<boolean>(false)
@@ -32,7 +35,8 @@ export default function SearchBar() {
 
         try {
 
-            console.log('submit', formInput)
+            console.log('link.submit', formInput)
+
             toast('Verifying Your URL Link', {
                 icon: '👏',
                 style: {
@@ -42,8 +46,9 @@ export default function SearchBar() {
                 },
             });
 
-            const [result, isNew] = await stag.onchain.findOrCreate({
+            console.log('stag.onchain.findOrCreate', {
                 where: {
+                    app: 'pow.co',
                     type: 'url',
                     content: {
                         url: formInput
@@ -58,10 +63,29 @@ export default function SearchBar() {
                 }
             })
 
-            console.log('STAG FIND OR CREATE RESULT', {result, isNew})
+            const [result, isNew] = await stag.onchain.findOrCreate({
+                where: {
+                    app: 'pow.co',
+                    type: 'url',
+                    content: {
+                        url: formInput
+                    }
+                },
+                defaults: {
+                    app: 'pow.co',
+                    type: 'url',
+                    content: {
+                        url: formInput
+                    }
+                }
+            })
 
-            console.log({ result, isNew })
+            console.log('stag.onchain.findOrCreate.result', {result, isNew})
 
+            // redirect to /[result.txid]
+
+            router.push(`/${result.txid}`)
+            /*
             if (isNew) {
 
                 toast('Posted URL On Chain...Now Boosting', {
@@ -105,7 +129,7 @@ export default function SearchBar() {
                     },
             });
 
-            console.log({boostBuyResult})
+            console.log({boostBuyResult})*/
 
             setSubmitting(false)
 
