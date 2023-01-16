@@ -43,6 +43,29 @@ import toast from 'react-hot-toast'
 
 import loader from '../../loader'
 
+import hljs from 'highlight.js'
+
+const Markdown = require('react-remarkable')
+
+const RemarkableOptions = {
+  breaks: true,
+  html: true,
+  typographer: true,
+  highlight: function (str: any, lang: any) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (err) {}
+    }
+
+    try {
+      return hljs.highlightAuto(str).value;
+    } catch (err) {}
+
+    return ''; // use external default escaping
+  }
+}
+
 interface Ranking {
   content_txid: string;
   content_type?: string;
@@ -258,8 +281,10 @@ function Rankings({startDate, endDate}: Dates) {
                 )}
 
                 {job.content_type?.match('markdown') && (
-                  
-                  <div dangerouslySetInnerHTML={{ __html: job.content_text || ''}} />
+
+
+                  <Markdown options={RemarkableOptions} source={job.content_text} />                  
+
                 )}
 
                 <OnchainEvent txid={job.content_txid}/>
