@@ -94,11 +94,17 @@ function DailyStandup() {
 
     const { query } = useRouter()
 
-    const defaultRoom = `SampleAppWorthyTruthsClarifyClearly`
+    const defaultRoom = `pow.co`
 
     const room = query.room || defaultRoom
 
     const roomName = `vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/${room}`
+
+    //@ts-ignore
+    const minimumTokenBalance = room.split('-')[1] || 1
+
+    //@ts-ignore
+    const tokenOrigin = room.split('-')[0]
 
     async function handleJitsiEvent(type: string, event: any, socket: Socket) {
 
@@ -118,8 +124,13 @@ function DailyStandup() {
 
     useEffect(() => {
 
+        console.log ({user, powcoBalance, minimumTokenBalance, tokenOrigin})
 
-        if (user && powcoBalance && powcoBalance >= MINIMUM_POWCO_BALANCE) {
+
+        if (user && powcoBalance && powcoBalance >= minimumTokenBalance) {
+            console.log("SUFFICIENT BALANCE")
+
+            console.log("TOKEN ORIGIN", tokenOrigin)
 
 
             // @ts-ignore
@@ -132,22 +143,32 @@ function DailyStandup() {
                 return
             }
 
+            console.log('JITSI INITIALIZED')
+
+
             if (jitsiInitialized) {
 
                 return
             }
 
+
             setJitsiInitialized(true)
 
             const token = localStorage.getItem('powco.auth.relayx.token');
 
+ 
+
+            //axios.post('http://localhost:5200/api/v1/jaas/auth', {
             axios.post('https://tokenmeet.live/api/v1/jaas/auth', {
                 wallet: 'relay',
                 paymail: user.paymail,
                 token,
-                roomName
+                roomName,
+                tokenOrigin
             })
             .then(({data}) => {
+
+                console.log('Jitsi JWT', data)
 
                 const domain = "8x8.vc";
 
@@ -235,7 +256,7 @@ function DailyStandup() {
         }
 
     // @ts-ignore
-    }, [window.JitsiMeetExternalAPI], nJitsis)
+    }, [window.JitsiMeetExternalAPI], nJitsis, powcoBalance, user, jitsiInitialized)
 
     return (
 
@@ -253,9 +274,9 @@ function DailyStandup() {
                         {(powcoBalance !== null && powcoBalance > -1 && powcoBalance < MINIMUM_POWCO_BALANCE) ? (
 
                             <div>
-                                <p>{MINIMUM_POWCO_BALANCE} POWCO required to attend daily meetings.</p>
+                                <p>{minimumTokenBalance} {tokenOrigin} tokens required to join this room.</p>
 
-                                    <Link passHref target='_blank' href='https://relayx.com/market/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2'>
+                                    <Link passHref target='_blank' href={`https://relayx.com/market/${tokenOrigin}`}>
                                         <Button component='a' variant='contained' sx={{ px: 5.5 }}>
                                             Buy Now
                                         </Button>
