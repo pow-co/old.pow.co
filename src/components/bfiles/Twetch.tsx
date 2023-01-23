@@ -73,8 +73,6 @@ export default function Twetch({ txid }: { txid: string }) {
 
     }, [txid])
 
-    console.log('TWETCH', post)
-
     if (post) {
         return <Box>
             <p>
