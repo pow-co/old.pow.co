@@ -73,11 +73,15 @@ export default function Twetch({ txid }: { txid: string }) {
 
     }, [txid])
 
+    console.log('TWETCH', post)
+
     if (post) {
         return <Box>
             <p>
-                <Image loader={loader} style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={'https://media.twetch.app/dyt/256x256/23927e8fe0014aef65fd88c345d3dd49f4ee3db145c318c7157df61194519223.png'} />
-                <Image loader={loader} style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={post?.userByUserId?.icon} />
+                <Image loader={loader} alt='Twetch Image' style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={'https://media.twetch.app/dyt/256x256/23927e8fe0014aef65fd88c345d3dd49f4ee3db145c318c7157df61194519223.png'} />
+                {post?.userByUserId?.icon && (
+                <Image loader={loader} alt='Twetch Icon' style={{borderRadius: '50%'}} width={'30px'} height={'30px'} src={post?.userByUserId?.icon || 'https://a.relayx.com/u/anon@relayx.com'} />
+                )}
                 u/{post?.userId} {post?.userByUserId?.name}
             </p>
             <br/>

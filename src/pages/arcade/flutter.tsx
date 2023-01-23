@@ -58,6 +58,7 @@ export default function ArcadeGame() {
 
     const [canvas, setCanvas] = useState<HTMLCanvasElement | null>(null)
 
+    const [showGame, setShowGame] = useState(true)
 
     const [hasteAuth, setHasteAuth] = useState<any>()
 
@@ -71,9 +72,15 @@ export default function ArcadeGame() {
 
     const [leaderboards, setLeaderboards] = useState([])
 
+    const [showLeaderboards, setShowLeaderboards] = useState(true)
+
+    const [chosenLeaderboard, setChosenLeaderboard] = useState()
+
+    const [playing, setPlaying] = useState(false)
+
     async function selectLeaderboard(leaderboard:any) {
       console.log('select leaderboard', leaderboard)
-      const { data } = await axios.post(`https://fluttergame.fun/api/v1/haste/plays`, {
+      const { data } = await axios.post(`http://localhost:5200/api/v1/haste/plays`, {
         leaderboard_id: leaderboard.id,
         handcash_token: hasteAuth.token
       })
@@ -82,7 +89,8 @@ export default function ArcadeGame() {
     }
 
     async function postScore(score: any) {
-      const { data } = await axios.post(`https://fluttergame.fun/api/v1/haste/scores`, {
+      const { data } = await axios.post(`http://localhost:5200/api/v1/haste/scores`, {
+        leaderboard_id: chosenLeaderboard.id,
         handcash_token: hasteAuth.token,
         score,
         play
@@ -120,7 +128,7 @@ export default function ArcadeGame() {
 
     useEffect(() => {
 
-        if (!play) { return }
+        //if (!play) { return }
 
         if (!hasteClient) { return }
 
@@ -197,6 +205,10 @@ export default function ArcadeGame() {
             return
         }
 
+        if (playing) { return }
+
+        setShowLeaderboards(false)
+
         //@ts-ignore
         var gpio = window.getP8Gpio();
 
@@ -227,6 +239,8 @@ export default function ArcadeGame() {
         })
 
         game.subscribe()
+
+        setPlaying(true)
 
     //@ts-ignore        
     }, [play])
@@ -259,25 +273,18 @@ export default function ArcadeGame() {
       window.Module.pico8Reset()
     }
 
+    console.log('HASTE AUTH', hasteAuth)
+
     return <>
         <Script src={'http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js'} />        
         <Script src={'/arcade/scripts/flutter.js'} />
 
         <Script src={'/arcade/scripts/pico8-gpio-listener.js'} />
 
-        <h1>World Builder Arcade Presents: Flutter!!</h1>
-
-        {hasteAuth && hasteAuth.isAuthenticated && hasteClient ? <>
-          <h2>Logged in as {hasteAuth.displayName} on Handcash</h2>
-          <p>
-            <a onClick={() => hasteClient.logout()}>Logout</a>
-          </p>
-        </> : <>
-          <img onClick={() => hasteClient?.login() } src='https://docs.hastearcade.com/img/login.svg'/>
-        </>}
+ 
 
 
-        {leaderboards && (
+        {hasteAuth && leaderboards && showLeaderboards && (
           <div className="leaderboard-list">
             {leaderboards.map((leaderboard: any) => {
               return <p><a onClick={() => { selectLeaderboard(leaderboard)}}>{leaderboard.formattedCostString}</a></p>
@@ -285,59 +292,78 @@ export default function ArcadeGame() {
           </div>
         )}
 
-          
+        {hasteAuth && (
+          <>
         <div className="pico8_el" onClick={picoReset}>
-          <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
-            alt="Reset"
-            width="12"
-            height="12"
-          />
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dOwoAMQhE15A+rfc/3bZ7AlMnQfywCkKsfcgMM9ZP+QHtIn0vLeBAFduiFdQ/0DmvtR5LXJ6CPSXe2ZXcFNlTxFbemKrbZPs35XogeS9xeQr+anT6LzoOwEDwZJ7jwhXUnwkTTiDQ2Ja34AAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
+          alt="Reset"
+          width="12"
+          height="12"
+        />
 
-          Reset
-        </div>
+        Reset
+      </div>
 
-        <div className="pico8_el" onClick={handlePause}>
-          <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
-            alt="Pause"
-            width="12"
-            height="12"
-          />
+      <div className="pico8_el" onClick={handlePause}>
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAPUlEQVR4Ae3doQ0AIAxEUWABLPtPh2WCq26DwFSU/JPNT166QSu/Hg86W9dwLte+diP7AwAAAAAAgD+A+jM2ZAgo84I0PgAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
+          alt="Pause"
+          width="12"
+          height="12"
+        />
 
-          Pause
-        </div>
-        <div className="pico8_el" onClick={requestFullScreen}>
-          <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
-            alt="Fullscreen"
-            width="12"
-            height="12"
-          />
+        Pause
+      </div>
+      <div className="pico8_el" onClick={requestFullScreen}>
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAaklEQVR4Ae2dsQ1AIQhExfze1v2ns3UCrfgFhmgUUAoGgHscp21wX9BqaZoDojbB96OkDJKNcTN2BHTyYNYmoT2BlPL7BKgcPfHjAVXKKadkHOn9K1r16N0czN6a95N8mnA7Aq2fTZ3Af3UKmCSMazL8HwAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
+          alt="Fullscreen"
+          width="12"
+          height="12"
+        />
 
-          Fullscreen
-        </div>
-        <div className="pico8_el" onClick={onClickSound}>
-          <img
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
-            alt="Toggle Sound"
-            width="12"
-            height="12"
-          />
+        Fullscreen
+      </div>
+      <div className="pico8_el" onClick={onClickSound}>
+        <img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAXklEQVR4Ae2doQ4AIQxD4YLH8v9fh+ULhjpxxSwLg2uyapr1JRu1iV5Z+1BGl4+xNpX38SYo2uRvYiT5LwEmt+ocgXVLrhPEgBiw8Q5w7/kueSkK+D2tJO4E/I3GrwkqQCBabEj/4QAAABB0RVh0TG9kZVBORwAyMDExMDIyMeNZtsEAAAAASUVORK5CYII="
+          alt="Toggle Sound"
+          width="12"
+          height="12"
+        />
 
-          Sound
-        </div>
-
-              <div id="game">
-                  <canvas
-                      className="emscripten"
-                      id="canvas"
-                      onContextMenu={(event) => event.preventDefault()}
-                  ></canvas>
-              </div>
+        Sound
+      </div>
 
 
-        <img src='https://docs.hastearcade.com/img/dark-badge.svg'/>
+
+
+
+        </>)}
+
+        <div id="game" className='game' style={{ display: hasteAuth ? 'inline' : 'none'}}>
+                <canvas
+                    className="emscripten"
+                    id="canvas"
+                    onContextMenu={(event) => event.preventDefault()}
+                ></canvas>
+            </div>
+
+            {hasteAuth && hasteAuth.isAuthenticated && hasteClient ? <>
+          {/*--<h2>Logged in as {hasteAuth.displayName} on Handcash</h2>--*/}
+          <br/>
+      <br/>
+          <img style={{textAlign: 'center', margin: '0 auto', width: '200px'}} src='https://docs.hastearcade.com/img/dark-badge.svg'/>
+
+          <p>
+
+
+            <a onClick={() => hasteClient.logout()}>Logout</a>
+          </p>
+        </> : <>
+          <img onClick={() => hasteClient?.login() } src='https://docs.hastearcade.com/img/login.svg'/>
+        </>}
 
     </>
 

@@ -264,12 +264,12 @@ function Rankings({startDate, endDate}: Dates) {
 
                 
 
-                {job.content_type?.match('image') && (
+                {/*{job.content_type?.match('image') && (
                   
                   <Image alt='bitcoin file server image' loader={loader} src={`https://bitcoinfileserver.com/${job.content_txid}`} width={'100%'} height={'100%'} layout={'responsive'}/>
-                )}
+                )}*/}
 
-                
+                                {/*
                 {job.content_type?.match('text/plain') && (
                   
                   <p>{job.content_text}</p>
@@ -285,6 +285,9 @@ function Rankings({startDate, endDate}: Dates) {
                 <Twetch txid={job.content_txid}/>
   
                 <Boost sx={{float: 'right', maxWidth: '100px'}} job={job} />
+
+                */}
+
 
               </CardContent>
             </Card>

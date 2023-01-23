@@ -270,7 +270,6 @@ function Rankings({startDate, endDate}: Dates) {
               <CardContent>
 
                 {job.content_type?.match('image') && (
-                  
                   <Image alt='bitcoin file server image' loader={loader} src={`https://bitcoinfileserver.com/${job.content_txid}`} width={'100%'} height={'100%'} layout={'responsive'}/>
                 )}
 
@@ -288,9 +287,11 @@ function Rankings({startDate, endDate}: Dates) {
                 )}
 
                 <OnchainEvent txid={job.content_txid}/>
+                 
 
                 <Twetch txid={job.content_txid}/>
-  
+                  {/* */}
+
                 <Boost sx={{float: 'right', maxWidth: '100px'}} job={job} />
 
               </CardContent>

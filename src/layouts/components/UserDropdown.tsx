@@ -101,6 +101,8 @@ const UserDropdown = (props: Props) => {
 
   const paymail = user?.paymail
 
+  const oneName = `1${user?.paymail?.split('@')[0]}`
+
   return (
     <Fragment>
       <Badge
@@ -194,6 +196,14 @@ const UserDropdown = (props: Props) => {
               <Link href={'/meet'}>POWCO Daily Meeting</Link>
             </Box>
           </MenuItem>
+          {user?.paymail && (
+          <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+            <Box sx={styles}>
+              <AccountOutline sx={{ mr: 2 }} />
+              <Link href={`/meet/${oneName}`}>My Meeting Room</Link>
+            </Box>
+          </MenuItem>
+          )}
 
           <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
             <Box sx={styles}>

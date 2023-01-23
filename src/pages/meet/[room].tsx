@@ -82,7 +82,7 @@ const events = [
 
 function DailyStandup() {
 
-    const { user, powcoBalance } = useAuth()
+    const { user, powcoBalance, login } = useAuth()
 
     const [jitsiInitialized, setJitsiInitialized] = useState<boolean>()
 
@@ -91,6 +91,8 @@ function DailyStandup() {
     const { isConnected, socket } = useTokenMeetLiveWebsocket()
 
     const [jitsiJWT, setJitsiJWT] = useState<string>()
+
+    const [userReady, setUserReady] = useState<boolean>(false)
 
     const { query } = useRouter()
 
@@ -122,17 +124,24 @@ function DailyStandup() {
         })
     }
 
+    console.log('USER', user)
+
+    if (!user) {
+        console.log('no user -- login')
+        login()
+    }
+
+    if (user && !userReady) {
+        setUserReady(true)
+    }
+
     useEffect(() => {
 
         console.log ({user, powcoBalance, minimumTokenBalance, tokenOrigin})
 
 
-        if (user && powcoBalance && powcoBalance >= minimumTokenBalance) {
-            console.log("SUFFICIENT BALANCE")
-
-            console.log("TOKEN ORIGIN", tokenOrigin)
-
-
+        if (true) {
+  
             // @ts-ignore
             if (!window.JitsiMeetExternalAPI) {
 
@@ -161,7 +170,7 @@ function DailyStandup() {
             //axios.post('http://localhost:5200/api/v1/jaas/auth', {
             axios.post('https://tokenmeet.live/api/v1/jaas/auth', {
                 wallet: 'relay',
-                paymail: user.paymail,
+                paymail: user?.paymail || 'anonymous@relayx.io',
                 token,
                 roomName,
                 tokenOrigin
@@ -256,7 +265,7 @@ function DailyStandup() {
         }
 
     // @ts-ignore
-    }, [window.JitsiMeetExternalAPI], nJitsis, powcoBalance, user, jitsiInitialized)
+    }, [window.JitsiMeetExternalAPI], nJitsis, userReady, user, jitsiInitialized)
 
     return (
 
@@ -316,7 +325,7 @@ function DailyStandup() {
 
 DailyStandup.getLayout = (page: ReactNode) => <UserLayout>{page}</UserLayout>;
 
-DailyStandup.guestGuard = false;
+DailyStandup.guestGuard = true;
 
 export default DailyStandup;
 
