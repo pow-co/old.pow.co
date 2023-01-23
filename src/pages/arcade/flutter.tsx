@@ -90,7 +90,7 @@ export default function ArcadeGame() {
 
     async function postScore(score: any) {
       const { data } = await axios.post(`http://localhost:5200/api/v1/haste/scores`, {
-        leaderboard_id: chosenLeaderboard.id,
+        leaderboard_id: '',//chosenLeaderboard?.id || '',
         handcash_token: hasteAuth.token,
         score,
         play
