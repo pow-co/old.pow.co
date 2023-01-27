@@ -18,7 +18,7 @@ import axios from 'axios'
 import { useTokenMeetLiveWebsocket } from 'src/hooks/useWebsocket';
 import { Socket } from 'socket.io-client/build/esm/socket';
 
-const MINIMUM_POWCO_BALANCE = 218
+const MINIMUM_POWCO_BALANCE = 420
 
 const events = [
     'cameraError',
