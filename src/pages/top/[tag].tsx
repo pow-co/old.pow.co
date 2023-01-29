@@ -39,7 +39,7 @@ import Twetch from 'src/components/bfiles/Twetch'
 
 import BoostpowButton from 'boostpow-button'
 import { BoostButton } from 'myboostpow-lib'
-import 'myboostpow-lib/dist/tailwind.css'
+//import 'myboostpow-lib/dist/tailwind.css'
 
 import { Box } from '@mui/material'
 

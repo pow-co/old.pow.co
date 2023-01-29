@@ -8767,13 +8767,14 @@
   "resolved" "https://registry.npmjs.org/murmurhash-js/-/murmurhash-js-1.0.0.tgz"
   "version" "1.0.0"
 
-"myboostpow-lib@^0.1.6":
-  "integrity" "sha512-TT8ZQ32GKhgwJajMIj+6rBcSeXCRvbbVgkq7DdqYMO+pdaQHMrKWgyfYhC2xN+Ik/7pblrmbYsi5ov6U6B3qqA=="
-  "resolved" "https://registry.npmjs.org/myboostpow-lib/-/myboostpow-lib-0.1.6.tgz"
-  "version" "0.1.6"
+"myboostpow-lib@^0.1.12":
+  "integrity" "sha512-80I3GtRCXncjkuCO3UVgETwgM+Eaf00EynoYbdb/y26iN+I/pxPwr/SiChRJ13ngNh5axLV5S9J+16iX2xbStQ=="
+  "resolved" "https://registry.npmjs.org/myboostpow-lib/-/myboostpow-lib-0.1.12.tgz"
+  "version" "0.1.12"
   dependencies:
     "axios" "^1.2.2"
-    "stag-relayx" "^0.2.8"
+    "stag-relayx" "^0.2.10"
+    "styled-components" "^5.3.6"
 
 "nanoclone@^0.2.1":
   "integrity" "sha512-wynEP02LmIbLpcYw8uBKpcfF6dmg2vcpKqxeH5UcoKEYdExslsdUA4ugFauuaeYdTB76ez6gJW8XAZ6CgkXYxA=="
@@ -10469,10 +10470,10 @@
     "pbkdf2-compat" "^4.0.0"
     "webpack" "^5.75.0"
 
-"stag-relayx@^0.2.8", "stag-relayx@^0.2.9":
-  "integrity" "sha512-siaRTHMj+r1nc6NyTvuXIH9oiv1LMayc/+uMBN2Z8Ny5VjtEscNEXDyw0LG3r8Ioi0I4/AllUngfttlVFbDNEw=="
-  "resolved" "https://registry.npmjs.org/stag-relayx/-/stag-relayx-0.2.9.tgz"
-  "version" "0.2.9"
+"stag-relayx@^0.2.10", "stag-relayx@^0.2.9":
+  "integrity" "sha512-L/SN7/DE/enHWkIWPwwhLRqeo+twB1gRhTwwwIfMllTs5uBB0kZLMTdPUM4gyTRjVKw/Txsi5lupZcj37H8pMA=="
+  "resolved" "https://registry.npmjs.org/stag-relayx/-/stag-relayx-0.2.10.tgz"
+  "version" "0.2.10"
   dependencies:
     "@runonbitcoin/nimble" "^1.0.14"
     "axios" "^1.2.0"

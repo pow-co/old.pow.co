@@ -31,7 +31,7 @@ import useBus from 'use-bus'
 
 import BoostpowButton from 'boostpow-button'
 import { BoostButton } from 'myboostpow-lib'
-import 'myboostpow-lib/dist/tailwind.css'
+//import 'myboostpow-lib/dist/tailwind.css'
 
 import { Box } from '@mui/material'
 
