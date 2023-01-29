@@ -23,7 +23,7 @@ import { useTokenMeetLiveWebsocket } from 'src/hooks/useWebsocket';
 import { Socket } from 'socket.io-client/build/esm/socket';
 import { useRouter } from 'next/router';
 
-const MINIMUM_POWCO_BALANCE = 100
+const MINIMUM_POWCO_BALANCE = 1
 
 const events = [
     'cameraError',
@@ -139,7 +139,6 @@ function DailyStandup() {
 
         console.log ({user, powcoBalance, minimumTokenBalance, tokenOrigin})
 
-
         if (true) {
   
             // @ts-ignore
@@ -188,12 +187,13 @@ function DailyStandup() {
                     roomName,
                     width: '100%',
                     height: 700,
-                    parentNode: document.querySelector('#jitsi-daily-meeting'),
+                    parentNode: document.querySelector('#tokenmeet-room-container'),
                     lang: 'en',
                     configOverwrite: {
                         prejoinPageEnabled: false,
                         startWithAudioMuted: true,
-                        startWithVideoMuted: true
+                        startWithVideoMuted: true,
+                        transcribingEnabled: true
                     },
                 };
 
@@ -280,30 +280,17 @@ function DailyStandup() {
                     {user ? (
                         <>
 
-                        {(powcoBalance !== null && powcoBalance > -1 && powcoBalance < MINIMUM_POWCO_BALANCE) ? (
-
+   
                             <div>
-                                <p>{minimumTokenBalance} {tokenOrigin} tokens required to join this room.</p>
-
-                                    <Link passHref target='_blank' href={`https://relayx.com/market/${tokenOrigin}`}>
-                                        <Button component='a' variant='contained' sx={{ px: 5.5 }}>
-                                            Buy Now
-                                        </Button>
-                                    </Link>
-                            </div>  
-
-                        ) : (
-                            <div>
-                                <div id="jitsi-daily-meeting"></div>
+                                <div id="tokenmeet-room-container"></div>
                             </div>
 
-                        )}
                         </>
 
   
                     ) : ( 
                         <div>
-                            <p>Please login to join the daily meeting.</p>
+                            <p>Please login to enter this room.</p>
 
                             <Link passHref href='/login'>
                                 <Button component='a' variant='contained' sx={{ px: 5.5 }}>

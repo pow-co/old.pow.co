@@ -190,7 +190,8 @@ function DailyStandup() {
                     configOverwrite: {
                         prejoinPageEnabled: false,
                         startWithAudioMuted: true,
-                        startWithVideoMuted: true
+                        startWithVideoMuted: true,
+                        transcribingEnabled: true
                     },
                 };
 
