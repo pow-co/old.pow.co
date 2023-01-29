@@ -18,7 +18,7 @@ import axios from 'axios'
 import { useTokenMeetLiveWebsocket } from 'src/hooks/useWebsocket';
 import { Socket } from 'socket.io-client/build/esm/socket';
 
-const MINIMUM_POWCO_BALANCE = 420
+import { determinePowcoMeetingTokenRequirement  } from 'src/utils/tokenmeet';
 
 const events = [
     'cameraError',
@@ -92,6 +92,15 @@ function DailyStandup() {
 
     const roomName = 'vpaas-magic-cookie-30f799d005ea4007aaa7afbf1a14cdcf/powco-club-room'
 
+    const [tokenMeetLiveMeetingTokenRequirement, setTokenMeetLiveMeetingTokenRequirement] = useState<number | null>(null)
+
+    useEffect(() => {        
+    
+        determinePowcoMeetingTokenRequirement()
+            .then(({ value }: any) => setTokenMeetLiveMeetingTokenRequirement(value))
+    
+    }, [])
+
     async function handleJitsiEvent(type: string, event: any, socket: Socket) {
 
         //TODO: Pipe the event to websocket server
@@ -137,9 +146,9 @@ function DailyStandup() {
 
     useEffect(() => {
 
-        console.log('USE EFFECT', {nJitsis})
+        console.log('USE EFFECT', {nJitsis, powcoBalance, tokenMeetLiveMeetingTokenRequirement})
 
-        if (user && powcoBalance && powcoBalance >= MINIMUM_POWCO_BALANCE) {
+        if (user && tokenMeetLiveMeetingTokenRequirement !== null && powcoBalance && powcoBalance >= tokenMeetLiveMeetingTokenRequirement) {
 
             // @ts-ignore
             if (!window.JitsiMeetExternalAPI) {
@@ -256,7 +265,7 @@ function DailyStandup() {
         console.log('--end use effect--', {nJitsis})
 
     // @ts-ignore
-    }, [window.JitsiMeetExternalAPI, jitsiJWT, powcoBalance])
+    }, [window.JitsiMeetExternalAPI, jitsiJWT, powcoBalance, tokenMeetLiveMeetingTokenRequirement])
 
     return (
 
@@ -270,25 +279,30 @@ function DailyStandup() {
 
                     {user ? (
                         <>
+                        <div>
+                            {tokenMeetLiveMeetingTokenRequirement === null ? (
+                                <p>Computing Token Requirement Based On An Ask Bitcoin Question</p>
+                            ) : (
+                                <p>Presently this room requires {tokenMeetLiveMeetingTokenRequirement} pow.co tokens to enter <a href="https://askbitcoin.com/questions/bcbeb659562d1a4a97d40705d74d261eabdbff9c4dd8bcf463421656a8215eb7">as determined by the bitcoin hive mind here</a>.</p>
+                            )}
+                            
 
-                        {(powcoBalance !== null && powcoBalance > -1 && powcoBalance < MINIMUM_POWCO_BALANCE) ? (
-
-                            <div>
-                                <p>{MINIMUM_POWCO_BALANCE} POWCO required to attend daily meetings.</p>
+                        {(tokenMeetLiveMeetingTokenRequirement && powcoBalance !== null && powcoBalance > -1 && powcoBalance < tokenMeetLiveMeetingTokenRequirement) ? (
+                                <>
 
                                     <Link passHref target='_blank' href='https://relayx.com/market/93f9f188f93f446f6b2d93b0ff7203f96473e39ad0f58eb02663896b53c4f020_o2'>
                                         <Button component='a' variant='contained' sx={{ px: 5.5 }}>
                                             Buy Now
                                         </Button>
                                     </Link>
-                            </div>  
+                                </>
 
                         ) : (
-                            <div>
                                 <div id="jitsi-daily-meeting"></div>
-                            </div>
 
                         )}
+                        </div>  
+
                         </>
 
   
