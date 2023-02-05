@@ -269,8 +269,10 @@ function Rankings({startDate, endDate}: Dates) {
 
               <CardContent>
 
-                {job.content_type?.match('image') && (
-                  <Image alt='bitcoin file server image' loader={loader} src={`https://bitcoinfileserver.com/${job.content_txid}`} width={'100%'} height={'100%'} layout={'responsive'}/>
+
+
+                {job.content_type?.match('image') && (                
+                  <img src={`data:image/jpeg;base64,${job.content_text}`} style={{width: '100%', height: '100%'}}/>
                 )}
 
                 
