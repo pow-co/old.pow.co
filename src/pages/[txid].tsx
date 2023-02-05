@@ -41,11 +41,9 @@ export default function ShowTransaction() {
 
               <CardContent>
 
-                {content.content_type?.match('image') && (
-                  
-                  <Image alt='bitcoin file server image' loader={loader} src={`https://bitcoinfileserver.com/${content.content_txid}`} width={'100%'} height={'100%'} layout={'responsive'}/>
+                {content.content_type?.match('image') && (                
+                  <img src={`data:image/jpeg;base64,${content.content_text}`} style={{width: '100%', height: '100%'}}/>
                 )}
-
                 
                 {content.content_type?.match('text/plain') && (
                   
